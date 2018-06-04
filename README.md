@@ -1,1 +1,1 @@
-[suh dude](https://lennertjansen.github.io/dataproject/) 
+[Pages](https://lennertjansen.github.io/dataproject/)
