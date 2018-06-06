@@ -11,6 +11,8 @@ Student number: 10488952
 
 The Association of Tenis Professionals (ATP) oversees a large number of yearly tournaments between an even greater number of tennis players, resulting in a sea of data and statistics regarding matches, rankings, player statistics (e.g. height, handedness, nationality, etc.). This abundance of information makes for difficult interpretation of statistics and detection of patterns.  
 
+Research question: I aim to uncover what characteristics make a succesful Grand Slam player.
+
 # Solution
 
 My proposal for the final project constitutes a number of linked (interactive) visualizations on player- and match-statistics in the ATP. With these visualizations, I aim to clarify patterns and relationships found within the data (e.g. which country produces the most Grand Slam winners? Does left handedness increase one’s probability of winning a match? Etc.)
