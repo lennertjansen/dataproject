@@ -25,7 +25,9 @@ External components: D3.js, d3-tip
 
 Similar visualizations: 
     •	https://www.kaggle.com/residentmario/exploring-wta-players
+    
     •	https://www.kaggle.com/anuj8june/wta-matches-and-rankings-comprehensive-analysis
+    
     •	https://www.kaggle.com/pcbaradhwaj/wta-data-understanding-and-basic-plots-notebook
 
 Hardest part: I expect the majority of technical difficulty to arise from data preprocessing and manipulation for a couple for reasons. Firstly, I’m planning on making rather simple and straight forward charts (i.e., bar charts, scatter plots, line graphs) as the complexity of the data does not call for more complex visualizations. Secondly, the size of the four csv-files is rather large, and they are very unbalanced. So I suspect it will take me a good amount of time to prepare the data for visualization and analysis. 
