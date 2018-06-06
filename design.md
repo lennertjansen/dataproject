@@ -12,6 +12,14 @@ To achieve this filtration of data, I will use Python to parse the desired CSV-e
 
 ### Technical components of my visualisations
 
+#### Player statistics (table with search bar)
+
+#### Grand Slam performance of player (stacked bar charts)
+
+#### Left vs Right
+
+### APIs or D3 plugins
+
 a diagram with an overview of the technical components of your app (visualizations, scraper etc etc)
 
 as well as descriptions of each of the components and what you need to implement these
