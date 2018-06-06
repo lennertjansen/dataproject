@@ -14,13 +14,25 @@ To achieve this filtration of data, I will use Python to parse the desired CSV-e
 
 #### Player statistics (table with search bar)
 
+This will be the first page / visualisation the user sees. The page will consist of a search bar with which the user can navigate through the Grand Slam players. Below the bar the user can find a concise table with an overview of a single player's statistics (average rank, handedness, height, nationality, match winning percentage, Grand Slam titles won, aces per match, double faults per match.
+
 #### Grand Slam performance of player (stacked bar charts)
 
-#### Left vs Right
+Next to the player stats table the user sees a stacked barchart with information regarding match performance for every Grand Slam tournament (i.e., percentage of matches won / lost for every tournament). The contents of the bar chart can be changed by clicking on elements in the table. So the bars can also show the average amount of aces or double faults per match per tournament.
+
+#### Left vs Right (linegraphs)
+
+Next to the search bar, I plan on implementing a couple of buttons via which the user can navigate through different visualisations. One of which will be a page on the performances of left and right handed players at Grand Slams. I plan to implement line graphs on winning percentages, aces, double faults etc made on average during matches (e.g.:  https://www.kaggle.com/drgilermo/right-or-left-which-is-better).
+
+#### Height and age (box plots)
+
+For this section I want to implement box plots on the heights and ages of Grand Slam match and tournament winners, per Grand Slam tournament.
+
+#### Nationality (pie chart)
+
+Finally, the user can navigate to a pie chart on the nationalities of Grand Slam tournament and match winners.
 
 ### APIs or D3 plugins
-
-a diagram with an overview of the technical components of your app (visualizations, scraper etc etc)
 
 as well as descriptions of each of the components and what you need to implement these
 
