@@ -34,6 +34,8 @@ Finally, the user can navigate to a pie chart on the nationalities of Grand Slam
 
 ### APIs or D3 plugins
 
-as well as descriptions of each of the components and what you need to implement these
+I expect to require the following plugins:
 
-a list of APIs or D3 plugins that you will be using to provide functionality in your app
+d3-tip
+
+bootstrap
