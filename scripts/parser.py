@@ -3,8 +3,8 @@ import json
 import pandas
 
 # open the CSV and JSON file
-csvfile = open('/Users/lennertjansen/Documents/Github_projects/dataproject/data/atp_1995_2016_copy.csv', 'r')
-jsonfile = open('/Users/lennertjansen/Documents/Github_projects/dataproject/data/atp_gs_1995_2016.json', 'w')
+csvfile = open('/Users/lennertjansen/Documents/Github_projects/dataproject/data/atp_1995_2016_test1.csv', 'r')
+jsonfile = open('/Users/lennertjansen/Documents/Github_projects/dataproject/data/atp_gs_1995_2016_test.json', 'w')
 
 fieldnames = ("tourney_id",	"tourney_name",	"surface", "draw_size", "tourney_level", "tourney_date", "match_num",
             "winner_id", "winner_seed", "winner_entry", "winner_name",	"winner_hand", "winner_ht",	"winner_ioc",
@@ -26,9 +26,10 @@ for row in reader:
 
     #print(row["tourney_level"])
 
-    if row["tourney_level"] == "G":
-        # Append to data list
-        list.append(row);
+    # if row["tourney_level"] == "G":
+    #     # Append to data list
+    #     list.append(row);
+    list.append(row);
 
 
 
