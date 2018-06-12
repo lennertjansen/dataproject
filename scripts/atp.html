@@ -3,16 +3,42 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="atp.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script type="text/javascript" src="libraries/d3.js"></script> <!--D3 version 4.13.0 -->
         <script type="text/javascript" src="libraries/tip.js"></script>
         <script type="text/javascript" src="atp.js"></script>
         <title>
             ATP Data Visualisations
         </title>
+
         <h1>
             ATP Data Visualisations
         </h1>
+
     </head>
     <body>
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="story.html">Dingen</a></li>
+                    <li><a href="https://www.linkedin.com/in/lennertjansen">Meer dingen</a></li>
+                </ul>
+
+                <div class="navbar-form navbar-right">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="inputFirm" placeholder="Search for a player">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="myBtn" type="submit" onclick="searchFirm()">
+                            <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+
     </body>
 </html>
