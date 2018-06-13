@@ -13,9 +13,9 @@ window.onload = function() {
 
     // append segment to body containing author and assignment information
     authorInfo = d3.select("body")
-                .append("p").text("Name: Lennert Jansen")
-                .append("p").text("Student number: 10488952")
-                .append("p").text("Course: Programming project, spring 2018")
+        .append("p").text("Name: Lennert Jansen")
+        .append("p").text("Student number: 10488952")
+        .append("p").text("Course: Programming project, spring 2018")
 
     // create empty object for ATP match data
     playerNames = [];
@@ -134,7 +134,7 @@ window.onload = function() {
 
         playerData = data;
 
-        makeProfile(playerData)
+        makeProfile(playerData);
 
     });
 
@@ -146,6 +146,8 @@ function makeProfile(data){
     console.log(data);
 
     playerNumber = Math.floor(Math.random() * 743);
+    //playerNumber = 213;
+
 
     // set dimensions for profile's side of svg canvas
     var profileMargin = {
@@ -155,7 +157,7 @@ function makeProfile(data){
         left: 70,
         textSpacing: 20
     };
-    profileOuterWidth = 725;
+    profileOuterWidth = 500;
     profileOuterHeight = 500;
     profileWidth = profileOuterWidth - profileMargin.left - profileMargin.right;
     profileHeight = profileOuterHeight - profileMargin.top - profileMargin.bottom;
@@ -252,10 +254,79 @@ function makeProfile(data){
     //     .attr("width", 16)
     //     .attr("height", 16);
 
+    // call bar chart function using a player object as an argument
+    makeBarChart(data, playerNumber);
+
 };
 
-function makeBarChart(data){
+function makeBarChart(data, playerNumber){
 
+    player = data[playerNumber]
+    //player = data[213];
+
+    var barchartData = [ {"tourney_name" : "Australian Open", "win_rate" : player["win_rate_aus"]},
+        {"tourney_name" : "Roland Garros", "win_rate" : player["win_rate_rg"]},
+        {"tourney_name" : "Wimbledon", "win_rate" : player["win_rate_wim"]},
+        {"tourney_name" : "US Open", "win_rate" : player["win_rate_us"]}
+    ];
+
+    console.log(player);
+
+    // set dimensions for profile's side of svg canvas
+    var barchartMargin = {
+        top: 30,
+        right: 105,
+        bottom: 50,
+        left: 70
+    };
+    barchartOuterWidth = 725;
+    barchartOuterHeight = 500;
+    barchartWidth = barchartOuterWidth - barchartMargin.left - barchartMargin.right;
+    barchartHeight = barchartOuterHeight - barchartMargin.top - barchartMargin.bottom;
+
+    // apply desired formatting for percentages
+    var formatPercent = d3.format('.2%');
+
+    // render svg canvas for bar chart
+    var barSvg = d3.select("body")
+        .append("svg")
+    	.attr("width", barchartOuterWidth)
+        .attr("height", barchartOuterHeight)
+    	.append("g")
+        .attr("transform", "translate(" + barchartMargin.left + "," + barchartMargin.top + ")");
+
+    // create ordinale scale for x variables and linear scale of y variables
+    var xScale = d3.scaleOrdinal()
+        .domain(["win_rate_aus", "win_rate_rg", "win_rate_wim", "win_rate_us"])
+        .range([0, barchartWidth]);
+
+    var yScale = d3.scaleLinear()
+        //.domain(d3.extent(data, function(d) {return data.win_rate_aus})).nice()
+        .domain([0, 1]).nice()
+        .range([barchartHeight, 0]);
+
+    // initi both axes
+    var xAxis = d3.axisBottom()
+        .scale(xScale);
+
+    var yAxis = d3.axisLeft()
+        .scale(yScale);
+
+    barSvg.selectAll("bar")
+        .data(barchartData)
+        .enter()
+        .append("rect")
+        .attr("class", "bar")
+        .attr("width", barchartWidth / barchartData.length)
+        .attr("height", function(d) {
+			return barchartHeight -  yScale(+d.win_rate);
+		})
+        .attr("x", function(d, i) {
+			return (barchartWidth / barchartData.length) * i ;
+		})
+        .attr("y", function(d){
+			return yScale(+d.win_rate);
+		});
 
 
 };
