@@ -393,11 +393,57 @@ function makeBarChart(data, playerNumber){
     //
     //      });
 
-    makePie(data, "Wimbledon");
+    makePie(data, "win_rate_wim");
 
 };
 
 function makePie(data, tournament){
+
+    var nationalities = [];
+
+    for (let i = 0; i < data.length; i++){
+
+        if (!nationalities.includes(data[i].nationality)){
+
+            nationalities.push(data[i].nationality);
+
+        };
+
+    };
+
+    console.log(nationalities);
+
+    pieData = [];
+
+    for (let i = 0; i < nationalities.length; i++){
+
+        country_sum = 0;
+
+        country_rate_sum = 0;
+
+        for (let j = 0; j < data.length; j++){
+
+            if (data[j].nationality == nationalities[i]){
+
+                country_sum++;
+
+                country_rate_sum += data[j].win_rate_wim;
+
+            };
+
+
+        };
+
+        pieObject = {
+            "country" : nationalities[i],
+            "country_win_rate" : country_rate_sum / country_sum
+        }
+
+        pieData.push(pieObject);
+
+    };
+
+    console.log(pieData);
 
     // set dimensions for the pie chart's side of svg canvas
     var pieMargin = {
@@ -423,6 +469,31 @@ function makePie(data, tournament){
 
     // append g element to center of pie chart svg canvas
     g = pieSvg.append("g").attr('transform', "translate(" + pieWidth / 2 + ", " + pieHeight / 2 +")");
+
+    var pie = d3.pie()
+        .sort(null)
+        .value(function(d) {
+            return d.country_win_rate;
+        });
+
+    // set sizes of outer and inner radii, respectively
+    var path = d3.arc()
+        .outerRadius(radius - 10)
+        .innerRadius(20);
+
+    var arc = g.selectAll(".arc")
+        .data(pie(pieData))
+        .enter()
+        .append("g")
+        .attr("class", "arc");
+
+    arc.append("path")
+        .attr("d", path)
+        .attr("fill", function(d) {
+            return color();
+        });
+
+
 
 };
 
