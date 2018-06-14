@@ -476,6 +476,14 @@ function makePie(data, tournament){
             return d.country_win_rate;
         });
 
+    var colors = d3.scaleQuantize()
+        .domain([0, 100])
+        .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
+        "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
+
+    var color = d3.scaleOrdinal(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
+    "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
+
     // set sizes of outer and inner radii, respectively
     var path = d3.arc()
         .outerRadius(radius - 10)
@@ -490,7 +498,7 @@ function makePie(data, tournament){
     arc.append("path")
         .attr("d", path)
         .attr("fill", function(d) {
-            return color();
+            return colors(d.country_win_rate * 100);
         });
 
 
