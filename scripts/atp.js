@@ -297,7 +297,8 @@ function makeBarChart(data, playerNumber){
 
     // create ordinale scale for x variables and linear scale of y variables
     var xScale = d3.scaleOrdinal()
-        .domain(["win_rate_aus", "win_rate_rg", "win_rate_wim", "win_rate_us"])
+        //.domain(["win_rate_aus", "win_rate_rg", "win_rate_wim", "win_rate_us"])
+        .domain(["Australian Open", "Roland Garros", "Wimbledon", "US Open"])
         .range([0, barchartWidth]);
 
     var yScale = d3.scaleLinear()
@@ -305,19 +306,28 @@ function makeBarChart(data, playerNumber){
         .domain([0, 1]).nice()
         .range([barchartHeight, 0]);
 
-    // initi both axes
+    // initialize both axes
     var xAxis = d3.axisBottom()
         .scale(xScale);
 
     var yAxis = d3.axisLeft()
         .scale(yScale);
 
+    // create info box for tip containing name, population and density
+    var tip = d3.tip()
+        .attr("class", "d3-tip")
+        .offset([-20, 0]).html(function(d, i) {
+         return "<strong>Tournament: </strong> <span style='color:grey'>" + d.tourney_name
+          + "</span>" + "<br>" + "Match winning rate: " + round(d.win_rate, 3) + "<br>"});
+
+    barSvg.call(tip);
+
     barSvg.selectAll("bar")
         .data(barchartData)
         .enter()
         .append("rect")
         .attr("class", "bar")
-        .attr("width", barchartWidth / barchartData.length)
+        .attr("width", (barchartWidth / barchartData.length) - 0.5)
         .attr("height", function(d) {
 			return barchartHeight -  yScale(+d.win_rate);
 		})
@@ -326,8 +336,93 @@ function makeBarChart(data, playerNumber){
 		})
         .attr("y", function(d){
 			return yScale(+d.win_rate);
-		});
+		})
+        .on("mouseover", tip.show) // ensure tip appears and disappears
+        .on("mouseout", tip.hide);
 
+    // draw y axis
+    barSvg.append("g")
+        .attr('id', 'barchartYAxis')
+        .attr('class', 'barchartAxis')
+        .call(yAxis);
+
+    // draw x axis
+    barSvg.append("g")
+        .attr('id','barchartXAxis')
+        .attr("class", "barchartAxis")
+        .attr("transform", "translate(0, " + barchartHeight + ")")
+        .call(xAxis)
+        .selectAll("text")
+    	.style("font-size", "8px")
+      	.style("text-anchor", "end")
+      	.attr("dx", "-.8em")
+      	.attr("dy", "-.55em")
+      	.attr("transform", "rotate(-45)" );
+
+    // var selector = d3.select("#drop")
+    // 	.append("select")
+    // 	.attr("id","dropdown")
+    // 	.on("change", function(d){
+    //     	selection = document.getElementById("dropdown");
+    //
+    //     	yScale.domain([0, d3.max(data, function(d){
+	// 			return +d[selection.value];})]);
+    //
+    //     	yAxis.scale(y);
+    //
+    //     	d3.selectAll(".rectangle")
+    //        		.transition()
+	//             .attr("height", function(d){
+	// 				return height - y(+d[selection.value]);
+	// 			})
+	// 			.attr("x", function(d, i){
+	// 				return (width / data.length) * i ;
+	// 			})
+	// 			.attr("y", function(d){
+	// 				return y(+d[selection.value]);
+	// 			})
+    //        		.ease("linear")
+    //        		.select("title")
+    //        		.text(function(d){
+    //        			return d.State + " : " + d[selection.value];
+    //        		});
+    //
+    //        	d3.selectAll("g.y.axis")
+    //        		.transition()
+    //        		.call(yAxis);
+    //
+    //      });
+
+    makePie(data, "Wimbledon");
+
+};
+
+function makePie(data, tournament){
+
+    // set dimensions for the pie chart's side of svg canvas
+    var pieMargin = {
+        top: 30,
+        bottom: 50,
+        left: 35,
+        right: 105
+    };
+    pieOuterWidth = 425;
+    pieOuterHeight = 500;
+    pieWidth = pieOuterWidth - pieMargin.left - pieMargin.right;
+    pieHeight = pieOuterHeight - pieMargin.top - pieMargin.bottom;
+    radius = Math.min(pieWidth, pieHeight) / 2;
+
+    // apply desired formatting for percentages
+    var formatPercent = d3.format('.2%');
+
+    // create svg element for pie chart
+    var pieSvg = d3.select("body").append("svg")
+        .attr('id', 'pieChart')
+        .attr("width", pieOuterWidth)
+        .attr("height", pieOuterHeight);
+
+    // append g element to center of pie chart svg canvas
+    g = pieSvg.append("g").attr('transform', "translate(" + pieWidth / 2 + ", " + pieHeight / 2 +")");
 
 };
 
