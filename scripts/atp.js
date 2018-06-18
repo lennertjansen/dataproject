@@ -534,7 +534,7 @@ function makeTree(data, playerNumber){
     };
 
     // Set the dimensions and margins of the diagram
-var margin = {top: 20, right: 90, bottom: 30, left: 90},
+var margin = {top: 40, right: 90, bottom: 30, left: 90},
     width = 1000 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
