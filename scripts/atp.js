@@ -136,11 +136,26 @@ window.onload = function() {
 
         //makeProfile(playerData);
 
-        makeTree(playerData);
+        //makeTree(playerData);
+
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                for (i = 0; i < playerData.length; i++){
+                    if (value == playerData[i].name.toLowerCase()){
+                        makeTree(playerData, i);
+                        break;
+                    };
+                };
+          });
+        });
 
     });
 
 };
+
+// use Bootstrap (jQuery) to implement filter bar
+
 
 // creates player profile visualisation
 function makeProfile(data){
@@ -587,9 +602,11 @@ function makePie(data, tournament){
 
 };
 
-function makeTree(data){
+function makeTree(data, playerNumber){
 
-    playerNumber = Math.floor(Math.random() * 743);
+    //playerNumber = Math.floor(Math.random() * 743);
+
+    d3.select('#tree').remove();
 
     player = data[playerNumber];
 
@@ -627,7 +644,7 @@ function makeTree(data){
     // append the svg object to the body of the page
     // appends a 'group' element to 'svg'
     // moves the 'group' element to the top left margin
-    var treeSvg = d3.select("body").append("svg")
+    var treeSvg = d3.select("body").append("svg").attr("id", "tree")
         .attr("width", treeOuterWidth)
         .attr("height", treeOuterHeight)
         .append("g")
