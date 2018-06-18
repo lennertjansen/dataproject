@@ -255,19 +255,28 @@ function makeProfile(data){
     //     .attr("height", 16);
 
     // call bar chart function using a player object as an argument
-    makeBarChart(data, playerNumber);
+    makeBarChart(data, playerNumber, 2);
 
 };
 
-function makeBarChart(data, playerNumber){
+function makeBarChart(data, playerNumber, statistic){
 
     player = data[playerNumber]
     //player = data[213];
 
-    var barchartData = [ {"tourney_name" : "Australian Open", "win_rate" : player["win_rate_aus"]},
-        {"tourney_name" : "Roland Garros", "win_rate" : player["win_rate_rg"]},
-        {"tourney_name" : "Wimbledon", "win_rate" : player["win_rate_wim"]},
-        {"tourney_name" : "US Open", "win_rate" : player["win_rate_us"]}
+
+
+    // create list of objects for the dropdown menus
+    var selectData = [  { "label" : "Match Winning Rate (%)", "aus" : "win_rate_aus", "rg" : "win_rate_rg", "wim" : "win_rate_wim", "us" : "win_rate_us", "total" : "win_rate" },
+                        { "label" : "Average Number of Aces per Match", "aus" : "mean_ace_aus", "rg" : "mean_ace_rg", "wim" : "mean_ace_wim", "us" : "mean_ace_us", "total" : "mean_ace" },
+                        { "label" : "Average Number of Double Faults per Match", "aus" : "mean_df_aus", "rg" : "mean_df_rg", "wim" : "mean_df_wim", "us" : "mean_df_us", "total" : "mean_df" },
+                    ];
+    var selection = selectData[statistic];
+
+    var barchartData = [ {"tourney_name" : "Australian Open", "stat" : player[selection.aus]},
+        {"tourney_name" : "Roland Garros", "stat" : player[selection.rg]},
+        {"tourney_name" : "Wimbledon", "stat" : player[selection.wim]},
+        {"tourney_name" : "US Open", "stat" : player[selection.us]}
     ];
 
     console.log(player);
@@ -295,16 +304,40 @@ function makeBarChart(data, playerNumber){
     	.append("g")
         .attr("transform", "translate(" + barchartMargin.left + "," + barchartMargin.top + ")");
 
+    //
+    // // create dropdown menu and corresponding span for y axis variables
+    // var span = barSvg.append('span')
+    //     .text('Select y-axis variable: ');
+    //
+    // var yInput = barSvg.append('select')
+    //     .attr('id','ySelect')
+    //     .on('change',yChange)
+    //     .selectAll('option')
+    //     .data(selectData)
+    //     .enter()
+    //     .append('option')
+    //     .attr('value', function (d) { return d.text })
+    //     .text(function (d) { return d.label ;});
+    //
+    // // break for space between menus
+    // barSvg.append('br')
+
     // create ordinale scale for x variables and linear scale of y variables
     var xScale = d3.scaleOrdinal()
         //.domain(["win_rate_aus", "win_rate_rg", "win_rate_wim", "win_rate_us"])
         .domain(["Australian Open", "Roland Garros", "Wimbledon", "US Open"])
         .range([0, barchartWidth]);
 
+    // var yScale = d3.scaleLinear()
+    //     //.domain(d3.extent(data, function(d) {return data.win_rate_aus})).nice()
+    //     .domain([0, 1]).nice()
+    //     .range([barchartHeight, 0]);
+
     var yScale = d3.scaleLinear()
-        //.domain(d3.extent(data, function(d) {return data.win_rate_aus})).nice()
-        .domain([0, 1]).nice()
-        .range([barchartHeight, 0]);
+			.domain([0, d3.max(data, function(d){
+				return +d[selection.total];
+			})])
+			.range([barchartHeight, 0]);
 
     // initialize both axes
     var xAxis = d3.axisBottom()
@@ -318,7 +351,7 @@ function makeBarChart(data, playerNumber){
         .attr("class", "d3-tip")
         .offset([-20, 0]).html(function(d, i) {
          return "<strong>Tournament: </strong> <span style='color:grey'>" + d.tourney_name
-          + "</span>" + "<br>" + "Match winning rate: " + round(d.win_rate, 3) + "<br>"});
+          + "</span>" + "<br>" + "Value: " + round(d.stat, 3) + "<br>"});
 
     barSvg.call(tip);
 
@@ -329,13 +362,13 @@ function makeBarChart(data, playerNumber){
         .attr("class", "bar")
         .attr("width", (barchartWidth / barchartData.length) - 0.5)
         .attr("height", function(d) {
-			return barchartHeight -  yScale(+d.win_rate);
+			return barchartHeight -  yScale(+d.stat);
 		})
         .attr("x", function(d, i) {
 			return (barchartWidth / barchartData.length) * i ;
 		})
         .attr("y", function(d){
-			return yScale(+d.win_rate);
+			return yScale(+d.stat);
 		})
         .on("mouseover", tip.show) // ensure tip appears and disappears
         .on("mouseout", tip.hide);
@@ -358,6 +391,7 @@ function makeBarChart(data, playerNumber){
       	.attr("dx", "-.8em")
       	.attr("dy", "-.55em")
       	.attr("transform", "rotate(-45)" );
+
 
     // var selector = d3.select("#drop")
     // 	.append("select")
@@ -392,6 +426,16 @@ function makeBarChart(data, playerNumber){
     //        		.call(yAxis);
     //
     //      });
+    //
+    //  selector.selectAll("option")
+    //    .data(selectData)
+    //    .enter().append("option")
+    //    .attr("value", function(d){
+    //      return d.;
+    //    })
+    //    .text(function(d){
+    //      return d.label;
+    //    })
 
     makePie(data, "win_rate_wim");
 
@@ -410,8 +454,6 @@ function makePie(data, tournament){
         };
 
     };
-
-    console.log(nationalities);
 
     pieData = [];
 
@@ -442,8 +484,6 @@ function makePie(data, tournament){
         pieData.push(pieObject);
 
     };
-
-    console.log(pieData);
 
     // set dimensions for the pie chart's side of svg canvas
     var pieMargin = {

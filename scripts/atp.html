@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="atp.css">
         <link rel="stylesheet" href="bootstrap.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="libraries/d3.js"></script> <!--D3 version 4.13.0 -->
@@ -40,7 +41,20 @@
                     </div>
                 </div>
 
+
             </div>
         </nav>
+        <div class = "row">
+            <div class = "col-sm-auto", id="description">
+              <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Select your statistic of interest</button>
+                <ul class ="dropdown-menu", id="dropit=">
+                  <li><a id ="selectWin" href="#win">Match Winning Rate (%)</a></li>
+                  <li><a id ="selectAce" href="#ace">Average Number of Aces per Match</a></li>
+                  <li><a id ="selectDf" href="#df">Average Number of Double Faults per Match</a></li>
+                </ul>
+            </div>
+          </div>
+        </div>
     </body>
 </html>
