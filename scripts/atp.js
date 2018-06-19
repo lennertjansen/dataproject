@@ -144,6 +144,8 @@ window.onload = function() {
                 for (i = 0; i < playerData.length; i++){
                     if (value == playerData[i].name.toLowerCase()){
                         makeTree(playerData, i);
+                        makeBarChart(playerData, i, 0);
+                        updateBarchart(playerData, i);
                         break;
                     };
                 };
@@ -278,17 +280,15 @@ function makeProfile(data){
 
 };
 
-function updateBarchart(data){
+function updateBarchart(data, number){
 
-    playerNumber = Math.floor(Math.random() * 743);
+    playerNumber = number;
 
-      // console.log('verververver', data)
+    //playerNumber = Math.floor(Math.random() * 743);
 
       var butWin = document.getElementById("selectWin");
       var butAce = document.getElementById("selectAce");
       var butDf = document.getElementById("selectDf");
-
-      // eventhandler > roept linegraph functie aan met de data die je wil hebben
 
       butWin.addEventListener("click", {
         handleEvent: function (event){
@@ -336,7 +336,7 @@ function makeBarChart(data, playerNumber, statistic){
         {"tourney_name" : "US Open", "stat" : player[selection.us]}
     ];
 
-    console.log(player);
+    //console.log(player);
 
     // set dimensions for profile's side of svg canvas
     var barchartMargin = {
@@ -494,11 +494,13 @@ function makeBarChart(data, playerNumber, statistic){
     //      return d.label;
     //    })
 
-    //makePie(data, "win_rate_wim");
+    makePie(data, "win_rate_wim");
 
 };
 
 function makePie(data, tournament){
+
+    d3.select('#pieChart').remove();
 
     var nationalities = [];
 
@@ -565,7 +567,7 @@ function makePie(data, tournament){
         .attr("height", pieOuterHeight);
 
     // append g element to center of pie chart svg canvas
-    g = pieSvg.append("g").attr('transform', "translate(" + pieWidth / 2 + ", " + pieHeight / 2 +")");
+    g = pieSvg.append("g").attr('transform', "translate(" + pieOuterWidth / 2 + ", " + pieOuterHeight / 2 +")");
 
     var pie = d3.pie()
         .sort(null)
@@ -578,13 +580,19 @@ function makePie(data, tournament){
         .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
         "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
 
-    var color = d3.scaleOrdinal(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
-    "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
+    //var color = d3.scaleOrdinal(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
+    //"#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
+
+    //var color = d3.scaleOrdinal(['#4daf4a','#377eb8','#ff7f00','#984ea3','#e41a1c']);
+
+    //var c20c = d3.scale.category20c();
+
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     // set sizes of outer and inner radii, respectively
     var path = d3.arc()
         .outerRadius(radius - 10)
-        .innerRadius(20);
+        .innerRadius(100);
 
     var arc = g.selectAll(".arc")
         .data(pie(pieData))
@@ -595,10 +603,9 @@ function makePie(data, tournament){
     arc.append("path")
         .attr("d", path)
         .attr("fill", function(d) {
-            return colors(d.country_win_rate * 100);
+            return color(5);
         });
 
-    makeTree(data, 213);
 
 };
 
