@@ -428,7 +428,10 @@ function makeBarChart(data, playerNumber, statistic){
 			return yScale(+d.stat);
 		})
         .on("mouseover", tip.show) // ensure tip appears and disappears
-        .on("mouseout", tip.hide);
+        .on("mouseout", tip.hide)
+        .on("click", function(d) {
+            return makePie(data, d.tourney_name)
+        })
 
     // draw y axis
     barSvg.append("g")
@@ -502,6 +505,19 @@ function makePie(data, tournament){
 
     d3.select('#pieChart').remove();
 
+    if (tournament == "Roland Garros"){
+        tournament = "win_rate_rg";
+    }
+    else if (tournament == "Australian Open"){
+        tournament = "win_rate_aus"
+    }
+    else if (tournament == "Wimbledon"){
+        tournament = "win_rate_wim"
+    }
+    else{
+        tournament = "win_rate_us"
+    }
+
     var nationalities = [];
 
     for (let i = 0; i < data.length; i++){
@@ -528,7 +544,7 @@ function makePie(data, tournament){
 
                 country_sum++;
 
-                country_rate_sum += data[j].win_rate_wim;
+                country_rate_sum += data[j][tournament];
 
             };
 
@@ -857,4 +873,19 @@ function makeTree(data, playerNumber){
 // function for rounding number to a desired amount of decimals
 function round(value, decimals) {
     return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+};
+
+//return an array of keys that match on a certain value
+//source: https://gist.github.com/iwek/3924925
+function getKeys(obj, val) {
+    var objects = [];
+    for (var i in obj) {
+        if (!obj.hasOwnProperty(i)) continue;
+        if (typeof obj[i] == 'object') {
+            objects = objects.concat(getKeys(obj[i], val));
+        } else if (obj[i] == val) {
+            objects.push(i);
+        }
+    }
+    return objects;
 };
