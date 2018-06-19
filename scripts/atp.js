@@ -544,6 +544,7 @@ function makePie(data, tournament){
 
     };
 
+
     // set dimensions for the pie chart's side of svg canvas
     var pieMargin = {
         top: 30,
@@ -575,19 +576,38 @@ function makePie(data, tournament){
             return d.country_win_rate;
         });
 
-    var colors = d3.scaleQuantize()
-        .domain([0, 100])
-        .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
-        "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
+    // var colors = d3.scaleQuantize()
+    //    .domain([0, 100])
+    //    .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
+    //    "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
 
-    //var color = d3.scaleOrdinal(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
-    //"#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
+    // var color = d3.scaleOrdinal(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
+    // "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
 
-    //var color = d3.scaleOrdinal(['#4daf4a','#377eb8','#ff7f00','#984ea3','#e41a1c']);
+    //var color = d3.scaleLinear()
+    //    .domain([0, 100])
+    //    .range(["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6"]);
 
     //var c20c = d3.scale.category20c();
 
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    // var color = d3.scaleOrdinal()
+    //     .domain([0,1])
+
+    // var color = d3.scaleOrdinal()
+    //     .domain([nationalities])
+    //     .range(colorbrewer.Spectral[nationalities.length])
+
+    var color = d3.scaleOrdinal(["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262"]);
+
+    // create info box for tip containing age category and population size
+    var pieTip = d3.tip()
+        .attr("class", "d3-tip")
+        .attr("id", "pieTip")
+        .offset([-20, 0]).html(function(d, i) {
+         return "<strong>Country: </strong> <span style='color:white'>" + d.data.country
+          + "</span>" + "<br>" + "Value: " + round(d.data.country_win_rate, 2)});
+
+    pieSvg.call(pieTip);
 
     // set sizes of outer and inner radii, respectively
     var path = d3.arc()
@@ -602,9 +622,11 @@ function makePie(data, tournament){
 
     arc.append("path")
         .attr("d", path)
-        .attr("fill", function(d) {
-            return color(5);
-        });
+        .attr("fill", function(d, i) {
+            return color(i);
+        })
+        .on("mouseover", pieTip.show) // ensure tip appears and disappears
+        .on("mouseout", pieTip.hide);
 
 
 };
