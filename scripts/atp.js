@@ -588,6 +588,8 @@ function makePie(data, tournament){
 
     var pie = d3.pie()
         .sort(null)
+        .startAngle(1.1*Math.PI)
+        .endAngle(3.1*Math.PI)
         .value(function(d) {
             return d.country_win_rate;
         });
@@ -639,12 +641,24 @@ function makePie(data, tournament){
 
     // add our generated arcs to create paths for each of the pie / donut wedges
     arc.append("path")
-        .attr("d", path)
+        //.attr("d", path)
         .attr("fill", function(d, i) {
             return color(i);
         })
         .on("mouseover", pieTip.show) // ensure tip appears and disappears
-        .on("mouseout", pieTip.hide);
+        .on("mouseout", pieTip.hide)
+        .transition().delay(function(d,i) {
+            return i * 500;
+        })
+        .duration(5)
+        .attrTween('d', function(d) {
+            var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
+            return function(t) {
+                d.endAngle = i(t);
+                return path(d)
+            };
+        })
+
 
     // create circle in centre of donut displaying data
     pieSvg.append("svg:circle")

@@ -69,11 +69,18 @@
 }
 
 
-/* body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html, body {
+	height: 1600px;
+  width: 100%;
+	margin: 0;
+	padding: 0;
+  color: white;
 }
 
-a {
-  color: #00B7FF;
-} */
+body {
+  background: rgb(231,76,60);
+  background: -moz-linear-gradient(-45deg,  grey 0%, black 100%);
+  background: -webkit-linear-gradient(-45deg,  grey) 0%, black 100%);
+  background: linear-gradient(135deg,  grey 0%, black 100%);
+  background: linear-gradient(135deg, white, #e4fecc);
+}
