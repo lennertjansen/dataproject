@@ -382,8 +382,10 @@ function makeBarChart(data, playerNumber, statistic){
     // create ordinale scale for x variables and linear scale of y variables
     var xScale = d3.scaleOrdinal()
         //.domain(["win_rate_aus", "win_rate_rg", "win_rate_wim", "win_rate_us"])
-        .domain(["Australian Open", "Roland Garros", "Wimbledon", "US Open"])
+        //.domain(["Australian Open", "Roland Garros", "Wimbledon", "US Open"])
         .range([0, barchartWidth]);
+
+    var tournaments = ["Australian Open", "Roland Garros", "Wimbledon", "US Open"];
 
     // var yScale = d3.scaleLinear()
     //     //.domain(d3.extent(data, function(d) {return data.win_rate_aus})).nice()
@@ -469,6 +471,16 @@ function makeBarChart(data, playerNumber, statistic){
         .attr('class', 'barchartAxis')
         .call(yAxis);
 
+    // write y axis label
+    barSvg.append("text")
+        .attr('class', 'axisLabel')
+        .attr('id', 'yAxisLabel')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', -40)
+        .attr('dy', '.71em')
+        .style('text-anchor', 'end')
+        .text(selectData[statistic].label);
+
     // draw x axis
     barSvg.append("g")
         .attr('id','barchartXAxis')
@@ -481,6 +493,25 @@ function makeBarChart(data, playerNumber, statistic){
       	.attr("dx", "-.8em")
       	.attr("dy", "-.55em")
       	.attr("transform", "rotate(-45)" );
+
+
+    for (var i = 0; i < tournaments.length; i++){
+
+        // draw bar labels under x axis
+        barSvg.append("text")
+            .attr('class', 'axisLabel')
+            .attr('id', 'xAxisLabel')
+            //.attr('transform', "translate(1000, " + barchartHeight + ")")
+            .attr('x', (barchartWidth / (barchartData.length * 2)) * ((2 * i) + 1) )
+            .attr('y', barchartHeight + 15)
+            .style('text-anchor', 'middle')
+            .style("font-size", "8px")
+            // .attr("dx", "-.8em")
+          	// .attr("dy", "-.55em")
+          	//.attr("transform", "rotate(-45)" )
+            .text(tournaments[i]);
+
+    }
 
 
     // var selector = d3.select("#drop")
