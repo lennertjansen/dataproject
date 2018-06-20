@@ -1,6 +1,26 @@
 ### Process
 
-# day 1 through ...
+## DISCLAIMER
+I only realized I was required to document my process in this file at the end of Week 2. So I have summarized my progress of the first two weeks and started documenting my daily progress as of Week 3.
+
+# Week 1 Summary
+
+Was inspired by the idea of doing visualizations on tennis data as I am a big fan of tennis and I stumbled upon an ATP data-set on Kaggle.
+
+Worked out some sketches of which visualizations I was considering (barchart, piechart, probability distribution, tree diagram, etc.)
+
+Considered topics to discuss using my visualizations (grand slam performance)
+
+Started harvesting and manipulating the data into a usable form for my project.
+
+# Week 2 Summary
+
+Continued data manipulation well into Week 2.
+
+...
+...
+...
+...
 
 # Monday, June 18th
 Finished fine tuning the collapsible tree-diagram, which can now also be rendered by searching for a player in the search bar.
