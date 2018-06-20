@@ -497,7 +497,7 @@ function makeBarChart(data, playerNumber, statistic){
     //      return d.label;
     //    })
 
-    makePie(data, "win_rate_wim");
+    //makePie(data, "win_rate_wim");
 
 };
 
@@ -506,16 +506,16 @@ function makePie(data, tournament){
     d3.select('#pieChart').remove();
 
     if (tournament == "Roland Garros"){
-        tournament = "win_rate_rg";
+        tournament_code = "win_rate_rg";
     }
     else if (tournament == "Australian Open"){
-        tournament = "win_rate_aus"
+        tournament_code = "win_rate_aus"
     }
     else if (tournament == "Wimbledon"){
-        tournament = "win_rate_wim"
+        tournament_code = "win_rate_wim"
     }
     else{
-        tournament = "win_rate_us"
+        tournament_code = "win_rate_us"
     }
 
     var nationalities = [];
@@ -544,7 +544,7 @@ function makePie(data, tournament){
 
                 country_sum++;
 
-                country_rate_sum += data[j][tournament];
+                country_rate_sum += data[j][tournament_code];
 
             };
 
@@ -630,12 +630,14 @@ function makePie(data, tournament){
         .outerRadius(radius - 10)
         .innerRadius(100);
 
+    // assign 'arc' classes to our groups of data
     var arc = g.selectAll(".arc")
         .data(pie(pieData))
         .enter()
         .append("g")
         .attr("class", "arc");
 
+    // add our generated arcs to create paths for each of the pie / donut wedges
     arc.append("path")
         .attr("d", path)
         .attr("fill", function(d, i) {
@@ -643,6 +645,21 @@ function makePie(data, tournament){
         })
         .on("mouseover", pieTip.show) // ensure tip appears and disappears
         .on("mouseout", pieTip.hide);
+
+    // create circle in centre of donut displaying data
+    pieSvg.append("svg:circle")
+        .attr('transform', "translate(" + pieOuterWidth / 2 + ", " + pieOuterHeight / 2 +")")
+        .attr("r", radius * 0.6)
+        .style("fill", '#E7E7E7');
+
+    pieSvg.append('text')
+        .attr('transform', "translate(" + pieOuterWidth / 2 + ", " + pieOuterHeight / 2 +")")
+        .attr('class', 'center-txt type')
+        .attr('y', 0)
+        .attr('text-anchor', 'middle')
+        .style('font-weight', 'bold')
+        .style('opacity', 0.5)
+        .text(tournament)
 
 
 };
@@ -754,7 +771,8 @@ function makeTree(data, playerNumber){
           .attr('r', 1e-6)
           .style("fill", function(d) {
               return d._children ? "LawnGreen" : "#fff";
-          });
+          })
+          .on('click', function(d){ if(d._children == undefined ){console.log("nah")}});
 
       // Add labels for the nodes
       nodeEnter.append('text')
