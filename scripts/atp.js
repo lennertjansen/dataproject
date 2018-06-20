@@ -433,6 +433,36 @@ function makeBarChart(data, playerNumber, statistic){
             return makePie(data, d.tourney_name)
         })
 
+        // barSvg.selectAll('bar')
+		// 	.data(barchartData)
+		// 	.enter()
+		// 	.append('rect')
+		// 	.attr('class', 'bar')
+        //     .attr("x", function(d, i) {
+    	// 		return xScale(d);
+    	// 	})
+        //     .attr("y", function(d, i){
+    	// 		return barchartHeight;
+    	// 	})
+		// 	.attr("width", function (d, i) {
+		// 		return xScale.rangeBand()
+		// 	})
+		// 	.attr("fill", function (d, i) {
+		// 		return 'rgb(256, ' + Math.round(i / 2) + ', ' + i + ')'
+		// 	})
+		// 	.attr("height", 0)
+		// 	.transition()
+		// 	.duration(200)
+		// 	.delay(function (d, i) {
+		// 		return i * 50;
+		// 	})
+		// 	.attr("y", function (d, i) {
+		// 		return barchartHeight - yScale(d);
+		// 	})
+		// 	.attr("height", function (d, i) {
+		// 		return yScale(d);
+		// 	});
+
     // draw y axis
     barSvg.append("g")
         .attr('id', 'barchartYAxis')
@@ -648,9 +678,9 @@ function makePie(data, tournament){
         .on("mouseover", pieTip.show) // ensure tip appears and disappears
         .on("mouseout", pieTip.hide)
         .transition().delay(function(d,i) {
-            return i * 500;
+            return i * 5;
         })
-        .duration(5)
+        .duration(0.05)
         .attrTween('d', function(d) {
             var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
             return function(t) {
@@ -779,14 +809,24 @@ function makeTree(data, playerNumber){
         })
         .on('click', click);
 
-      // Add Circle for the nodes
-      nodeEnter.append('circle')
-          .attr('class', 'node')
-          .attr('r', 1e-6)
-          .style("fill", function(d) {
-              return d._children ? "LawnGreen" : "#fff";
-          })
-          .on('click', function(d){ if(d._children == undefined ){console.log("nah")}});
+    // Add Circle for the nodes
+    nodeEnter.append('circle')
+        .attr('class', 'node')
+        .attr('r', 1e-6)
+        .style("fill", function(d) {
+            return d._children ? "LawnGreen" : "#fff";
+        })
+        .on('click', function(d){
+            if(d._children == undefined ){
+                if (d.data.name == "Match Winning Rate: " + round(player.win_rate * 100, 2) + "%" ){
+                    return makeBarChart(data, playerNumber, 0);
+                } else if (d.data.name == "Average No. of Aces per Match: " + round(player.mean_ace, 2)){
+                    return makeBarChart(data, playerNumber, 1);
+                } else if (d.data.name == "Average No. of Double Faults per Match: " + round(player.mean_df, 2)){
+                    return makeBarChart(data, playerNumber, 2);
+                };
+            };
+        });
 
       // Add labels for the nodes
       nodeEnter.append('text')
