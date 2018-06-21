@@ -448,7 +448,7 @@ function makeBarChart(data, playerNumber, statistic){
         .on("mouseover", tip.show) // ensure tip appears and disappears
         .on("mouseout", tip.hide)
         .on("click", function(d) {
-            return makePie(data, d.tourney_name)
+            return makePie(data, d.tourney_name, statistic)
         })
 
         // barSvg.selectAll('bar')
@@ -578,12 +578,20 @@ function makeBarChart(data, playerNumber, statistic){
 
 };
 
-function makePie(data, tournament){
+function makePie(data, tournament, statistic){
 
     d3.select('#pieChart').remove();
 
+    // create list of objects for the dropdown menus
+    var selectData = [  { "label" : "Match Winning Rate (%)", "aus" : "win_rate_aus", "rg" : "win_rate_rg", "wim" : "win_rate_wim", "us" : "win_rate_us", "total" : "win_rate" },
+                        { "label" : "Average Number of Aces per Match", "aus" : "mean_ace_aus", "rg" : "mean_ace_rg", "wim" : "mean_ace_wim", "us" : "mean_ace_us", "total" : "mean_ace" },
+                        { "label" : "Average Number of Double Faults per Match", "aus" : "mean_df_aus", "rg" : "mean_df_rg", "wim" : "mean_df_wim", "us" : "mean_df_us", "total" : "mean_df" },
+                    ];
+    var selection = selectData[statistic];
+
     if (tournament == "Roland Garros"){
         tournament_code = "win_rate_rg";
+
     }
     else if (tournament == "Australian Open"){
         tournament_code = "win_rate_aus"
@@ -666,11 +674,12 @@ function makePie(data, tournament){
     // append chart title
     pieSvg.append("text")
         .attr('class', 'chartTitle')
-        .attr('id', 'barchartTitle')
+        .attr('id', 'pieChartTitle')
         .attr('x', pieOuterWidth * (2 / 4))
-        .attr('y', pieMargin.top - 20)
+        .attr('y', pieMargin.top)
+        .attr('font-size', '5px')
         .attr('text-anchor', 'middle')
-        .text("bruhhhh");
+        .text("Donut chart of the average " + selection.label + " of various nationalities at " + tournament);
 
     var pie = d3.pie()
         .sort(null)
@@ -764,6 +773,7 @@ function makePie(data, tournament){
 
 };
 
+// source: https://bl.ocks.org/d3noob/43a860bc0024792f8803bba8ca0d5ecd
 function makeTree(data, playerNumber){
 
     //playerNumber = Math.floor(Math.random() * 743);
