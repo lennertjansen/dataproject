@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="atp.css">
+        <link rel="stylesheet" href="bootstrap.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script type="text/javascript" src="libraries/d3.js"></script> <!--D3 version 4.13.0 -->
+        <script type="text/javascript" src="libraries/tip.js"></script>
+        <script src="libraries/colorbrewer.min.js"></script>
+        <script type="text/javascript" src="atp.js"></script>
+        <script src="https://unpkg.com/ionicons@4.1.2/dist/ionicons.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <title>
+            ATP Data Visualisations and Usage
+        </title>
+
+        <h1>
+            ATP Data Visualisations (1995 - 2016) and Usage
+        </h1>
+
+    </head>
+    <body>
+
+        <nav class="navbar navbar-inverse default ">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li><a href="atp.html">Home</a></li>
+                    <li class="active"><a href="#">Story behind the data, and usage</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="personalInfoContainer"></div>
+
+        <h1> Why tennis data? </h1>
+        <p>
+            As a child, I grew up playing tennis and fanatically watching Grand Slam matches regularly with my family.
+            So, when I stumbled upon <a href="https://www.kaggle.com/sijovm/atpdata">the ATP Matches, 1968 to 2017 dataset on Kaggle</a> I was instantly interested.
+            The dataset encompasses match data regarding EVERY ATP tour tennis match from 1968 to 2017. As one can imagine, this posed as an obstacle.
+            Due to the unreasonably large amount of computation time required to process the data, I decided to limit myself to Grand Slam matches between 1995 and 2016.
+            So, it must be kept in mind when interpretating the graphs that some statistics  contain discrepancies on a player's performance, as some player's careers exceed the span of 1995 to 2016 (e.g., Pete Sampras).
+        </p>
+
+        <h1> Using the visualisations </h1>
+        <h2>The search bar </h2>
+        <p>
+            Everything starts at the search bar. Here, you can enter a desired player's first and last name (case unsensitive), or simply type "random" and render the first diagram.
+        </p>
+
+        <h2> Collapsible Tree Diagram (dendrogram) </h2>
+        <p>
+            Upon searching a (random) player a tennis-ball-like icon (node) appears, from which two links extend. Each of these links end in nodes, which when clicked on, extend into even more nodes!
+            The upper half of the fully extended dendrogram contains the player's personal information, i.e., nationality, height and handedness.
+            Whereas the lower three end nodes contain performance statistics calculated from the extensive dataset.
+            The lower three end nodes (match statistics) update the bar chart below when clicked on.
+        </p>
+        <h2> The Grand Slam Bar Chart </h2>
+        <p>
+            A bar chart appears below the dendrogram, containing information on a selected player's performance at the four grand slams (in order of occurrence in a year).
+            The contents of said bar chart can be updated in two ways: by clicking on the aforementioned end-nodes in the dendrogram, or by selecting the statistic of interest in the dropdown menu in the upper left corner.
+            Furthermore, when one of the bar's is clicked, the donut chart is rendered.
+        </p>
+        <h2> The Donut Chart </h2>
+        <p>
+            An interesting comparison might be how players of different nationalities perform at a specific grand slam (on average). Hence, the donut chart.
+            This chart depicts the average performance statistic of a certain nationality (determined by IOC codes) at a specific grand slam.
+        </p>
+
+        <h1> The story and interesting observations </h1>
+        <p>
+            The number of lines in a paragraph depends on the size of the browser window. If you resize the browser window, the number of lines in this paragraph will change.
+        </p>
+
+    </body>
+</html>

@@ -12,7 +12,7 @@
 window.onload = function() {
 
     // append segment to body containing author and assignment information
-    authorInfo = d3.select("body")
+    authorInfo = d3.select("#personalInfoContainer")
         .append("p").text("Name: Lennert Jansen")
         .append("p").text("Student number: 10488952")
         .append("p").text("Course: Programming project, spring 2018")
@@ -147,7 +147,14 @@ window.onload = function() {
                         makeBarChart(playerData, i, 0);
                         updateBarchart(playerData, i);
                         break;
-                    };
+                    } else if (value == "random"){
+                        randomNumber = Math.floor(Math.random() * playerData.length);
+                        makeTree(playerData, randomNumber);
+                        makeBarChart(playerData, randomNumber, 0);
+                        updateBarchart(playerData, randomNumber);
+                        break;
+
+                    }
                 };
           });
         });
@@ -160,125 +167,125 @@ window.onload = function() {
 
 
 // creates player profile visualisation
-function makeProfile(data){
-
-    console.log(data);
-
-    playerNumber = Math.floor(Math.random() * 743);
-    //playerNumber = 213;
-
-
-    // set dimensions for profile's side of svg canvas
-    var profileMargin = {
-        top: 30,
-        right: 105,
-        bottom: 50,
-        left: 70,
-        textSpacing: 20
-    };
-    profileOuterWidth = 500;
-    profileOuterHeight = 500;
-    profileWidth = profileOuterWidth - profileMargin.left - profileMargin.right;
-    profileHeight = profileOuterHeight - profileMargin.top - profileMargin.bottom;
-
-    // apply desired formatting for percentages
-    var formatPercent = d3.format('.2%');
-
-    // create svg element for player profile
-    var profileSvg = d3.select('body').append('svg')
-        .attr('width', profileOuterWidth)
-        .attr('height', profileOuterHeight)
-        .append('g')
-        .attr('transform', 'translate(' + profileMargin.left + ', ' + profileMargin.top +')');
-
-    profileSvg.append("text")
-        .attr('class', 'playerProfileText')
-        .attr('id', 'playerName')
-        .attr("transform", "translate(0 " + profileHeight + ")")
-        .attr("x", 0)
-        .attr("y", -profileHeight)
-        .style("text-anchor", "start")
-        .text("Name: " + data[playerNumber]["name"]);
-
-    profileSvg.append("text")
-        .attr('class', 'playerProfileText')
-        .attr('id', 'playerNationality')
-        .attr("transform", "translate(0 " + profileHeight + ")")
-        .attr("x", 0)
-        .attr("y", -profileHeight + profileMargin.textSpacing)
-        .style("text-anchor", "start")
-        .text("Nationality: " + data[playerNumber]["nationality"]);
-
-    profileSvg.append("text")
-        .attr('class', 'playerProfileText')
-        .attr('id', 'playerHeight')
-        .attr("transform", "translate(0 " + profileHeight + ")")
-        .attr("x", 0)
-        .attr("y", -profileHeight + (2 * profileMargin.textSpacing))
-        .style("text-anchor", "start")
-        .text("Height: " + data[playerNumber]["height"] + " cm");
-
-    profileSvg.append("text")
-        .attr('class', 'playerProfileText')
-        .attr('id', 'playerHand')
-        .attr("transform", "translate(0 " + profileHeight + ")")
-        .attr("x", 0)
-        .attr("y", -profileHeight + (3 * profileMargin.textSpacing))
-        .style("text-anchor", "start")
-        .text("Handedness: " + data[playerNumber]["hand"]);
-
-    profileSvg.append("text")
-        .attr('class', 'playerProfileText')
-        .attr('id', 'playerRank')
-        .attr("transform", "translate(0 " + profileHeight + ")")
-        .attr("x", 0)
-        .attr("y", -profileHeight + (4 * profileMargin.textSpacing))
-        .style("text-anchor", "start")
-        .text("Average ATP rank: " + round(data[playerNumber]["mean_rank"], 2));
-
-    profileSvg.append("text")
-        .attr('class', 'playerProfileText')
-        .attr('id', 'playerWinRate')
-        .attr("transform", "translate(0 " + profileHeight + ")")
-        .attr("x", 0)
-        .attr("y", -profileHeight + (5 * profileMargin.textSpacing))
-        .style("text-anchor", "start")
-        .text("Match winning rate: " + round(data[playerNumber]["win_rate"], 2) + " %");
-
-    profileSvg.append("text")
-        .attr('class', 'playerProfileText')
-        .attr('id', 'playerAce')
-        .attr("transform", "translate(0 " + profileHeight + ")")
-        .attr("x", 0)
-        .attr("y", -profileHeight + (6 * profileMargin.textSpacing))
-        .style("text-anchor", "start")
-        .text("Average no. of aces per match: " + round(data[playerNumber]["mean_ace"], 2));
-
-    profileSvg.append("text")
-        .attr('class', 'playerProfileText')
-        .attr('id', 'playerDf')
-        .attr("transform", "translate(0 " + profileHeight + ")")
-        .attr("x", 0)
-        .attr("y", -profileHeight + (7 * profileMargin.textSpacing))
-        .style("text-anchor", "start")
-        .text("Average no. of double faults per match: " + round(data[playerNumber]["mean_df"], 2));
-
-    // profileSvg.append('g')
-    //     .enter()
-    //     .append('image')
-    //     .attr("xlink:href", "https://github.com/favicon.ico")
-    //     .attr("transform", "translate(0 " + profileHeight + ")")
-    //     .attr("x", profileWidth)
-    //     .attr("y", -6)
-    //     .attr("width", 16)
-    //     .attr("height", 16);
-
-    // call bar chart function using a player object as an argument
-    makeBarChart(data, playerNumber, 2);
-
-    updateBarchart(data);
-
-};
+// function makeProfile(data){
+//
+//     console.log(data);
+//
+//     playerNumber = Math.floor(Math.random() * 743);
+//     //playerNumber = 213;
+//
+//
+//     // set dimensions for profile's side of svg canvas
+//     var profileMargin = {
+//         top: 30,
+//         right: 105,
+//         bottom: 50,
+//         left: 70,
+//         textSpacing: 20
+//     };
+//     profileOuterWidth = 500;
+//     profileOuterHeight = 500;
+//     profileWidth = profileOuterWidth - profileMargin.left - profileMargin.right;
+//     profileHeight = profileOuterHeight - profileMargin.top - profileMargin.bottom;
+//
+//     // apply desired formatting for percentages
+//     var formatPercent = d3.format('.2%');
+//
+//     // create svg element for player profile
+//     var profileSvg = d3.select('body').append('svg')
+//         .attr('width', profileOuterWidth)
+//         .attr('height', profileOuterHeight)
+//         .append('g')
+//         .attr('transform', 'translate(' + profileMargin.left + ', ' + profileMargin.top +')');
+//
+//     profileSvg.append("text")
+//         .attr('class', 'playerProfileText')
+//         .attr('id', 'playerName')
+//         .attr("transform", "translate(0 " + profileHeight + ")")
+//         .attr("x", 0)
+//         .attr("y", -profileHeight)
+//         .style("text-anchor", "start")
+//         .text("Name: " + data[playerNumber]["name"]);
+//
+//     profileSvg.append("text")
+//         .attr('class', 'playerProfileText')
+//         .attr('id', 'playerNationality')
+//         .attr("transform", "translate(0 " + profileHeight + ")")
+//         .attr("x", 0)
+//         .attr("y", -profileHeight + profileMargin.textSpacing)
+//         .style("text-anchor", "start")
+//         .text("Nationality: " + data[playerNumber]["nationality"]);
+//
+//     profileSvg.append("text")
+//         .attr('class', 'playerProfileText')
+//         .attr('id', 'playerHeight')
+//         .attr("transform", "translate(0 " + profileHeight + ")")
+//         .attr("x", 0)
+//         .attr("y", -profileHeight + (2 * profileMargin.textSpacing))
+//         .style("text-anchor", "start")
+//         .text("Height: " + data[playerNumber]["height"] + " cm");
+//
+//     profileSvg.append("text")
+//         .attr('class', 'playerProfileText')
+//         .attr('id', 'playerHand')
+//         .attr("transform", "translate(0 " + profileHeight + ")")
+//         .attr("x", 0)
+//         .attr("y", -profileHeight + (3 * profileMargin.textSpacing))
+//         .style("text-anchor", "start")
+//         .text("Handedness: " + data[playerNumber]["hand"]);
+//
+//     profileSvg.append("text")
+//         .attr('class', 'playerProfileText')
+//         .attr('id', 'playerRank')
+//         .attr("transform", "translate(0 " + profileHeight + ")")
+//         .attr("x", 0)
+//         .attr("y", -profileHeight + (4 * profileMargin.textSpacing))
+//         .style("text-anchor", "start")
+//         .text("Average ATP rank: " + round(data[playerNumber]["mean_rank"], 2));
+//
+//     profileSvg.append("text")
+//         .attr('class', 'playerProfileText')
+//         .attr('id', 'playerWinRate')
+//         .attr("transform", "translate(0 " + profileHeight + ")")
+//         .attr("x", 0)
+//         .attr("y", -profileHeight + (5 * profileMargin.textSpacing))
+//         .style("text-anchor", "start")
+//         .text("Match winning rate: " + round(data[playerNumber]["win_rate"], 2) + " %");
+//
+//     profileSvg.append("text")
+//         .attr('class', 'playerProfileText')
+//         .attr('id', 'playerAce')
+//         .attr("transform", "translate(0 " + profileHeight + ")")
+//         .attr("x", 0)
+//         .attr("y", -profileHeight + (6 * profileMargin.textSpacing))
+//         .style("text-anchor", "start")
+//         .text("Average no. of aces per match: " + round(data[playerNumber]["mean_ace"], 2));
+//
+//     profileSvg.append("text")
+//         .attr('class', 'playerProfileText')
+//         .attr('id', 'playerDf')
+//         .attr("transform", "translate(0 " + profileHeight + ")")
+//         .attr("x", 0)
+//         .attr("y", -profileHeight + (7 * profileMargin.textSpacing))
+//         .style("text-anchor", "start")
+//         .text("Average no. of double faults per match: " + round(data[playerNumber]["mean_df"], 2));
+//
+//     // profileSvg.append('g')
+//     //     .enter()
+//     //     .append('image')
+//     //     .attr("xlink:href", "https://github.com/favicon.ico")
+//     //     .attr("transform", "translate(0 " + profileHeight + ")")
+//     //     .attr("x", profileWidth)
+//     //     .attr("y", -6)
+//     //     .attr("width", 16)
+//     //     .attr("height", 16);
+//
+//     // call bar chart function using a player object as an argument
+//     makeBarChart(data, playerNumber, 2);
+//
+//     updateBarchart(data);
+//
+// };
 
 function updateBarchart(data, number){
 
@@ -360,6 +367,15 @@ function makeBarChart(data, playerNumber, statistic){
         .attr("height", barchartOuterHeight)
     	.append("g")
         .attr("transform", "translate(" + barchartMargin.left + "," + barchartMargin.top + ")");
+
+    // append chart title
+    barSvg.append("text")
+        .attr('class', 'chartTitle')
+        .attr('id', 'barchartTitle')
+        .attr('x', barchartWidth * (2 / 4))
+        .attr('y', barchartMargin.top - 20)
+        .attr('text-anchor', 'middle')
+        .text('Bar Chart of ' + player.name + "'s Grand Slam performance");
 
     //
     // // create dropdown menu and corresponding span for y axis variables
@@ -647,6 +663,15 @@ function makePie(data, tournament){
     // append g element to center of pie chart svg canvas
     g = pieSvg.append("g").attr('transform', "translate(" + pieOuterWidth / 2 + ", " + pieOuterHeight / 2 +")");
 
+    // append chart title
+    pieSvg.append("text")
+        .attr('class', 'chartTitle')
+        .attr('id', 'barchartTitle')
+        .attr('x', pieOuterWidth * (2 / 4))
+        .attr('y', pieMargin.top - 20)
+        .attr('text-anchor', 'middle')
+        .text("bruhhhh");
+
     var pie = d3.pie()
         .sort(null)
         .startAngle(1.1*Math.PI)
@@ -787,6 +812,15 @@ function makeTree(data, playerNumber){
         .append("g")
         .attr("transform", "translate("
               + treeMargin.left + "," + treeMargin.top + ")");
+
+    // append chart title
+    treeSvg.append("text")
+        .attr('class', 'chartTitle')
+        .attr('id', 'treeTitle')
+        .attr('x', treeWidth * (3 / 4))
+        .attr('y', treeMargin.top)
+        .attr('text-anchor', 'end')
+        .text('Collapsible Tree Diagram of ' + player.name)
 
     var i = 0,
         duration = 750,

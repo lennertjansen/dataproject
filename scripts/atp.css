@@ -84,3 +84,11 @@ body {
   background: linear-gradient(135deg,  grey 0%, black 100%);
   background: linear-gradient(135deg, white, #e4fecc);
 }
+
+/* Titles and whatnot */
+.chartTitle {
+    color: grey;
+    font-family: arial;
+    font-size: 16px;
+	opacity: 0.5;
+}

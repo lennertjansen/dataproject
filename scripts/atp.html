@@ -19,7 +19,7 @@
         </title>
 
         <h1>
-            ATP Data Visualisations
+            ATP Data Visualisations (1995 - 2016)
         </h1>
 
     </head>
@@ -29,29 +29,20 @@
             <div class="container-fluid">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#">Home</a></li>
-                    <li><a href="story.html">Dingen</a></li>
-                    <li><a href="https://www.linkedin.com/in/lennertjansen">Meer dingen</a></li>
+                    <li><a href="story.html">Story behind the data, and usage</a></li>
                 </ul>
-
-                <!-- <div class="navbar-form navbar-right">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="inputFirm" placeholder="Search for a player">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" id="myBtn" type="submit" onclick="searchFirm()">
-                            <i class="glyphicon glyphicon-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div> -->
 
 
             </div>
-            <input class="form-control" id="myInput" type="text" placeholder="Search for your player of interest...">
+            <input class="form-control" id="myInput" type="text" placeholder="Search for your player of interest, or type 'random'">
         </nav>
+
+        <div id="personalInfoContainer"></div>
+
         <div class = "row">
             <div class = "col-sm-auto", id="description">
               <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Select your statistic of interest</button>
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Update the Bar Chart by selecting your statistic of interest</button>
                 <ul class ="dropdown-menu", id="dropit=">
                   <li><a id ="selectWin" href="#win">Match Winning Rate (%)</a></li>
                   <li><a id ="selectAce" href="#ace">Average Number of Aces per Match</a></li>

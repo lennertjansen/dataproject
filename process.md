@@ -30,9 +30,16 @@ Made a very basic link between the dropdown menu and the barchart.
 # Tuesday, June 19th
 Managed to link the barchart and piechart
 
-FIguring out how to link the tree nodes with the barchart
+Figuring out how to link the tree nodes with the barchart
 
 # Wednesday, June 20th
 Added animation to donut chart.
 
 Worked out the connectivity between collapsible tree and barchart. All three visualisations are now connected
+
+# Thursday, June 21st
+Added option to look up random tennis player.
+
+Started adding titles and story telling elements.
+
+Considering adding a question-mark icon with a tooltip that appears when hovering over said icon containing information on the usage of my visualizations. But for now I'll write this information in story.html
