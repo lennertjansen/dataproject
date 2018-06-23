@@ -43,3 +43,13 @@ Added option to look up random tennis player.
 Started adding titles and story telling elements.
 
 Considering adding a question-mark icon with a tooltip that appears when hovering over said icon containing information on the usage of my visualizations. But for now I'll write this information in story.html
+
+# Friday, June 22nd
+Had my weekly walkthrough with Tim and discussed further additions to be made to my project, as well as bugs in needs of removal.
+
+The search bar will be implemented such that upon typing a part of a name, a list of names starting with the typed letters appear for the user to select from.
+This was advised by Tim, as not all users can be expected to know full names of tennis players by heart.
+
+Furthermore, I will be adding small question-mark icons which display a tutorial-like tooltip once hovered on.
+
+# Saturday, June 23rd
