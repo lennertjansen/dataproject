@@ -92,9 +92,10 @@ window.onload = function() {
 
         $(document).ready(function(){
 
-            $('#myInput1').on('submit', function() {
+            $('#myInputSubmission').on('submit', function() {
 
-                var value = $(this).val();
+                console.log("Oke")
+                var value = $('#myInput1').val().toLowerCase();
                 console.log(value);
 
 
