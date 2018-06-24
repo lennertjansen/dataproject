@@ -53,3 +53,10 @@ This was advised by Tim, as not all users can be expected to know full names of 
 Furthermore, I will be adding small question-mark icons which display a tutorial-like tooltip once hovered on.
 
 # Saturday, June 23rd
+Started implementing the autocomplete function of the search bar using a W3 School tutorial.
+
+Commenced cleaning my code in preparation of final deadline.
+
+Started writing the structure of my final report in LaTeX. https://www.sharelatex.com/project/5b2e390491d4e20d3fe61db9
+
+# Sunday, June 24th
