@@ -88,25 +88,6 @@ window.onload = function() {
 
         playerNames = getValues(data, "name");
 
-        // console.log(autocomplete(document.getElementById("myInput1"), playerNames));
-        console.log("oke")
-
-        // $(document).ready(function(){
-        //
-        //     $('#myInputSubmission').on('submit', function() {
-        //
-        //         console.log("Oke")
-        //         var value = $('#myInput1').val().toLowerCase();
-        //         console.log(value);
-        //
-        //
-        //
-        //     });
-        //
-        // });
-
-
-
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
@@ -420,7 +401,7 @@ function makeBarChart(data, playerNumber, statistic){
         .on("mouseover", tip.show) // ensure tip appears and disappears
         .on("mouseout", tip.hide)
         .on("click", function(d) {
-            return makePie(data, d.tourney_name, statistic)
+            return makePie(data, d.tourney_name, statistic, player.nationality)
         })
 
         // barSvg.selectAll('bar')
@@ -550,7 +531,7 @@ function makeBarChart(data, playerNumber, statistic){
 
 };
 
-function makePie(data, tournament, statistic){
+function makePie(data, tournament, statistic, playerNationality){
 
     d3.select('#pieChart').remove();
 
@@ -563,16 +544,20 @@ function makePie(data, tournament, statistic){
 
     if (tournament == "Roland Garros"){
         tournament_code = "win_rate_rg";
+        tournament_country = "FRA"
 
     }
     else if (tournament == "Australian Open"){
         tournament_code = "win_rate_aus"
+        tournament_country = "AUS"
     }
     else if (tournament == "Wimbledon"){
         tournament_code = "win_rate_wim"
+        tournament_country = "GBR"
     }
     else{
         tournament_code = "win_rate_us"
+        tournament_country = "USA"
     }
 
     var nationalities = [];
@@ -610,12 +595,26 @@ function makePie(data, tournament, statistic){
 
         pieObject = {
             "country" : nationalities[i],
-            "country_win_rate" : country_rate_sum / country_sum
+            "stat" : country_rate_sum / country_sum
         }
 
         pieData.push(pieObject);
 
     };
+
+    playerObject = getObjects(pieData, "country", playerNationality);
+    countryObject = getObjects(pieData, "country", tournament_country);
+
+    // sort data in ascending order of relevant statistic
+    ascendingOrder(pieData, "stat")
+
+    // create shortened list of data objects containing the top 4 countries and nationality of selected player
+    pieData = pieData.slice(pieData.length - 4, pieData.length);
+
+    pieData.push(playerObject[0]);
+    pieData.push(countryObject[0]);
+
+    pieData = removeDuplicates(pieData, "country");
 
 
     // set dimensions for the pie chart's side of svg canvas
@@ -658,7 +657,7 @@ function makePie(data, tournament, statistic){
         .startAngle(1.1*Math.PI)
         .endAngle(3.1*Math.PI)
         .value(function(d) {
-            return d.country_win_rate;
+            return d.stat;
         });
 
     // var colors = d3.scaleQuantize()
@@ -690,7 +689,7 @@ function makePie(data, tournament, statistic){
         .attr("id", "pieTip")
         .offset([-20, 0]).html(function(d, i) {
          return "<strong>Country: </strong> <span style='color:white'>" + d.data.country
-          + "</span>" + "<br>" + "Value: " + round(d.data.country_win_rate, 2)});
+          + "</span>" + "<br>" + "Value: " + round(d.data.stat, 2)});
 
     pieSvg.call(pieTip);
 
@@ -717,7 +716,7 @@ function makePie(data, tournament, statistic){
         .transition().delay(function(d,i) {
             return i * 5;
         })
-        .duration(0.05)
+        .duration(500)
         .attrTween('d', function(d) {
             var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
             return function(t) {
@@ -1153,4 +1152,25 @@ function autocomplete(inp, arr) {
 document.addEventListener("click", function (e) {
     closeAllLists(e.target);
 });
+}
+
+// accepts list of objects and key based on which list is sorted in ascending order
+function ascendingOrder(list, key){
+
+    list.sort(function(a, b){
+        return a[key] - b[key]
+    });
+
+    return list;
+
+};
+
+// Remove duplicates from an array of objects in javascript
+// source: https://gist.github.com/lmfresneda/9158e06a93a819a78b30cc175573a8d3
+function removeDuplicates( arr, prop ) {
+  let obj = {};
+  return Object.keys(arr.reduce((prev, next) => {
+    if(!obj[next[prop]]) obj[next[prop]] = next;
+    return obj;
+  }, obj)).map((i) => obj[i]);
 }

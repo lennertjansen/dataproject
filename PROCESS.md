@@ -60,3 +60,6 @@ Commenced cleaning my code in preparation of final deadline.
 Started writing the structure of my final report in LaTeX. https://www.sharelatex.com/project/5b2e390491d4e20d3fe61db9
 
 # Sunday, June 24th
+Completed implementation of autocomplete functionality
+
+# Monday, June 25th
