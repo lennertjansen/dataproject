@@ -88,25 +88,31 @@ window.onload = function() {
 
         playerNames = getValues(data, "name");
 
-        console.log(autocomplete(document.getElementById("myInput1"), playerNames));
+        // console.log(autocomplete(document.getElementById("myInput1"), playerNames));
+        console.log("oke")
 
-        $(document).ready(function(){
+        // $(document).ready(function(){
+        //
+        //     $('#myInputSubmission').on('submit', function() {
+        //
+        //         console.log("Oke")
+        //         var value = $('#myInput1').val().toLowerCase();
+        //         console.log(value);
+        //
+        //
+        //
+        //     });
+        //
+        // });
 
-            $('#myInputSubmission').on('submit', function() {
 
-                console.log("Oke")
-                var value = $('#myInput1').val().toLowerCase();
-                console.log(value);
-
-
-
-            });
-
-        });
 
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
+                //console.log(value)
+                autocomplete(document.getElementById("myInput"), playerNames);
+                //autocomplete(document.getElementById("myInput"), playerNames).toLowerCase();
                 for (i = 0; i < playerData.length; i++){
                     if (value == playerData[i].name.toLowerCase()){
                         makeTree(playerData, i);
