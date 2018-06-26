@@ -63,3 +63,13 @@ Started writing the structure of my final report in LaTeX. https://www.sharelate
 Completed implementation of autocomplete functionality
 
 # Monday, June 25th
+Working out some bugs in the autocomplete search-bar.
+
+Finished the summarized version of the donut chart.
+
+# Tuesday, June 26th
+Fixed the bugs in the div placement. The visualisations no longer jump from location to location upon updating them.
+
+Started adding question mark icons which will display a usage-manual when hovered over by the user.
+
+Fixing the title and legend placement.

@@ -9,8 +9,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="libraries/d3.js"></script> <!--D3 version 4.13.0 -->
         <script type="text/javascript" src="libraries/tip.js"></script>
+        <script type="text/javascript" src="libraries/d3-legend.js"></script>
         <script src="libraries/colorbrewer.min.js"></script>
         <script type="text/javascript" src="atp.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
         <script src="https://unpkg.com/ionicons@4.1.2/dist/ionicons.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -42,9 +44,9 @@
         </nav>
 
         <div id="personalInfoContainer"></div>
-        <span class="glyphicon glyphicon-question-sign"></span>
+        <!-- <span class="glyphicon glyphicon-question-sign"></span> -->
 
-        <div class = "row">
+        <!-- <div class = "row">
             <div class = "col-sm-auto", id="description">
               <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Update the Bar Chart by selecting your statistic of interest</button>
@@ -55,6 +57,24 @@
                 </ul>
             </div>
           </div>
+        </div> -->
+        <div class="visualisation" id="divTree">
+        </div>
+        <div class="visualisation" id="divBar" style="float: left">
+            <div class = "row">
+                <div class = "col-sm-auto", id="description">
+                  <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Update the Bar Chart by selecting your statistic of interest</button>
+                    <ul class ="dropdown-menu", id="dropit=">
+                      <li><a id ="selectWin" href="#win">Match Winning Rate (%)</a></li>
+                      <li><a id ="selectAce" href="#ace">Average Number of Aces per Match</a></li>
+                      <li><a id ="selectDf" href="#df">Average Number of Double Faults per Match</a></li>
+                    </ul>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="visualisation" id="divPie" style="float: left">
         </div>
     </body>
 </html>

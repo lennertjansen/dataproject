@@ -314,12 +314,34 @@ function makeBarChart(data, playerNumber, statistic){
     var formatPercent = d3.format('.2%');
 
     // render svg canvas for bar chart
-    var barSvg = d3.select("body").append("svg")
+    var barSvg = d3.select("#divBar").append("svg")
         .attr("id", "barchart")
     	.attr("width", barchartOuterWidth)
         .attr("height", barchartOuterHeight)
     	.append("g")
         .attr("transform", "translate(" + barchartMargin.left + "," + barchartMargin.top + ")");
+
+    // create info box for tip containing age category and population size
+    var barHelpTip = d3.tip()
+      .attr("class", "d3-tip")
+      .attr("id", "barHelpTip")
+      .offset([-20, 0]).html(function(d, i) {
+       return "<strong>Country: </strong> <span style='color:white'>" +
+        + "</span>" + "<br>" + "Value: "});
+
+    barSvg.call(barHelpTip);
+
+    barSvg.append('text')
+        //.attr('id', 'test')
+        .attr('font-family', 'FontAwesome')
+        .attr('font-size', '30px' )
+        .attr('x', barchartWidth)
+        .attr('y', barchartMargin.top)
+        //.text(function(d) { return '\uf118' }); // smiley
+        // .text(function(d) { return '\uf128' }); // question mark
+        .text(function(d) { return '\uf059' })
+        .on("mouseover", barHelpTip.show) // ensure tip appears and disappears
+        .on("mouseout", barHelpTip.hide);
 
     // append chart title
     barSvg.append("text")
@@ -634,7 +656,7 @@ function makePie(data, tournament, statistic, playerNationality){
     var formatPercent = d3.format('.2%');
 
     // create svg element for pie chart
-    var pieSvg = d3.select("body").append("svg")
+    var pieSvg = d3.select("#divPie").append("svg")
         .attr('id', 'pieChart')
         .attr("width", pieOuterWidth)
         .attr("height", pieOuterHeight);
@@ -787,12 +809,34 @@ function makeTree(data, playerNumber){
     // append the svg object to the body of the page
     // appends a 'group' element to 'svg'
     // moves the 'group' element to the top left margin
-    var treeSvg = d3.select("body").append("svg").attr("id", "tree")
+    var treeSvg = d3.select("#divTree").append("svg").attr("id", "tree")
         .attr("width", treeOuterWidth)
         .attr("height", treeOuterHeight)
         .append("g")
         .attr("transform", "translate("
               + treeMargin.left + "," + treeMargin.top + ")");
+
+    // create info box for tip containing age category and population size
+    var treeHelpTip = d3.tip()
+      .attr("class", "d3-tip")
+      .attr("id", "treeHelpTip")
+      .offset([-20, 0]).html(function(d, i) {
+       return "<strong>Country: </strong> <span style='color:white'>" +
+        + "</span>" + "<br>" + "Value: "});
+
+    treeSvg.call(treeHelpTip);
+
+    treeSvg.append('text')
+        //.attr('id', 'test')
+        .attr('font-family', 'FontAwesome')
+        .attr('font-size', '30px' )
+        .attr('x', treeWidth)
+        .attr('y', treeMargin.top)
+        //.text(function(d) { return '\uf118' }); // smiley
+        // .text(function(d) { return '\uf128' }); // question mark
+        .text(function(d) { return '\uf059' })
+        .on("mouseover", treeHelpTip.show) // ensure tip appears and disappears
+        .on("mouseout", treeHelpTip.hide);
 
     // append chart title
     treeSvg.append("text")
