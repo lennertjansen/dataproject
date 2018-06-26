@@ -1,14 +1,14 @@
-#### Final Report - Programming Project
+# Final Report - Programming Project
 Stuff
 
-# By Lennert Jansen (10488952)
+#### By Lennert Jansen (10488952)
 
-# Introduction and description of the ATP Match Data Visualisations
+#### Introduction and description of the ATP Match Data Visualisations
 
-# Technical design
+#### Technical design
 
-# Challenges of development
+#### Challenges of development
 
-# Design choices and topics & ideas for future projects
+#### Design choices and topics & ideas for future projects
 
-# Conclusion 
+#### Conclusion 
