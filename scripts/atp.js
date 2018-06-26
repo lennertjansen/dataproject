@@ -23,67 +23,6 @@ window.onload = function() {
     // retrieve data from JSON file for manipulation with D3
     d3.json("playerdata_new.json", function(data) {
 
-        // // store JSON data in seperate lists created above
-        // // the iteration starts at 1 as the first object is redundant
-        // for (var iter = 1; iter < data.length; iter++){
-        //
-        //     playerNames.push(data[iter]["winner_name"]);
-        //     playerNames.push(data[iter]["loser_name"]);
-        //
-        // };
-        //
-        // // eliminate duplicate elements
-        // playerNames = playerNames.unique();
-        //
-        // //console.log(getValues(data, 'winner_hand'));
-        //
-        // for (var iter = 0; iter < playerNames.length; iter++){
-        //
-        //     gamesWon = getObjects(data, 'winner_name', playerNames[iter]);
-        //     gamesLost = getObjects(data, 'loser_name', playerNames[iter]);
-        //
-        //     gamesPlayed = gamesWon.concat(gamesLost)
-        //
-        //     var rank_sum = 0;
-        //     var ace_sum = 0;
-        //     var df_sum = 0;
-        //
-        //     for (var i = 0; i < gamesWon.length; i++){
-        //
-        //         rank_sum += Number(gamesWon[i]["winner_rank"]);
-        //         ace_sum += Number(gamesWon[i]["w_ace"]);
-        //         df_sum += Number(gamesWon[i]["w_df"]);
-        //
-        //     };
-        //
-        //     for (var i = 0; i < gamesLost.length; i++){
-        //
-        //         rank_sum += Number(gamesLost[i]["loser_rank"]);
-        //         ace_sum += Number(gamesLost[i]["l_ace"]);
-        //         df_sum += Number(gamesLost[i]["l_df"]);
-        //
-        //     };
-        //
-        //     playerObject = {
-        //         "name" : playerNames[iter],
-        //         "nationality" : gamesPlayed[0]["winner_ioc"],
-        //         "height" : gamesPlayed[0]["winner_ht"],
-        //         "hand" : gamesPlayed[0]["winner_hand"],
-        //         "games_played" : gamesPlayed.length,
-        //         "win_rate" : (gamesWon.length / gamesPlayed.length),
-        //         "mean_rank" : (rank_sum / gamesPlayed.length),
-        //         "mean_ace" : (ace_sum / gamesPlayed.length),
-        //         "mean_df" : (df_sum / gamesPlayed.length)
-        //         };
-        //
-        //     playerData.push(playerObject);
-        //
-        // };
-        //
-        // console.log(playerData);
-        //
-        // console.log(JSON.stringify(playerData));
-
         playerData = data;
 
         playerNames = getValues(data, "name");
@@ -120,135 +59,10 @@ window.onload = function() {
 
 };
 
-// use Bootstrap (jQuery) to implement filter bar
-
-
-// creates player profile visualisation
-// function makeProfile(data){
-//
-//     console.log(data);
-//
-//     playerNumber = Math.floor(Math.random() * 743);
-//     //playerNumber = 213;
-//
-//
-//     // set dimensions for profile's side of svg canvas
-//     var profileMargin = {
-//         top: 30,
-//         right: 105,
-//         bottom: 50,
-//         left: 70,
-//         textSpacing: 20
-//     };
-//     profileOuterWidth = 500;
-//     profileOuterHeight = 500;
-//     profileWidth = profileOuterWidth - profileMargin.left - profileMargin.right;
-//     profileHeight = profileOuterHeight - profileMargin.top - profileMargin.bottom;
-//
-//     // apply desired formatting for percentages
-//     var formatPercent = d3.format('.2%');
-//
-//     // create svg element for player profile
-//     var profileSvg = d3.select('body').append('svg')
-//         .attr('width', profileOuterWidth)
-//         .attr('height', profileOuterHeight)
-//         .append('g')
-//         .attr('transform', 'translate(' + profileMargin.left + ', ' + profileMargin.top +')');
-//
-//     profileSvg.append("text")
-//         .attr('class', 'playerProfileText')
-//         .attr('id', 'playerName')
-//         .attr("transform", "translate(0 " + profileHeight + ")")
-//         .attr("x", 0)
-//         .attr("y", -profileHeight)
-//         .style("text-anchor", "start")
-//         .text("Name: " + data[playerNumber]["name"]);
-//
-//     profileSvg.append("text")
-//         .attr('class', 'playerProfileText')
-//         .attr('id', 'playerNationality')
-//         .attr("transform", "translate(0 " + profileHeight + ")")
-//         .attr("x", 0)
-//         .attr("y", -profileHeight + profileMargin.textSpacing)
-//         .style("text-anchor", "start")
-//         .text("Nationality: " + data[playerNumber]["nationality"]);
-//
-//     profileSvg.append("text")
-//         .attr('class', 'playerProfileText')
-//         .attr('id', 'playerHeight')
-//         .attr("transform", "translate(0 " + profileHeight + ")")
-//         .attr("x", 0)
-//         .attr("y", -profileHeight + (2 * profileMargin.textSpacing))
-//         .style("text-anchor", "start")
-//         .text("Height: " + data[playerNumber]["height"] + " cm");
-//
-//     profileSvg.append("text")
-//         .attr('class', 'playerProfileText')
-//         .attr('id', 'playerHand')
-//         .attr("transform", "translate(0 " + profileHeight + ")")
-//         .attr("x", 0)
-//         .attr("y", -profileHeight + (3 * profileMargin.textSpacing))
-//         .style("text-anchor", "start")
-//         .text("Handedness: " + data[playerNumber]["hand"]);
-//
-//     profileSvg.append("text")
-//         .attr('class', 'playerProfileText')
-//         .attr('id', 'playerRank')
-//         .attr("transform", "translate(0 " + profileHeight + ")")
-//         .attr("x", 0)
-//         .attr("y", -profileHeight + (4 * profileMargin.textSpacing))
-//         .style("text-anchor", "start")
-//         .text("Average ATP rank: " + round(data[playerNumber]["mean_rank"], 2));
-//
-//     profileSvg.append("text")
-//         .attr('class', 'playerProfileText')
-//         .attr('id', 'playerWinRate')
-//         .attr("transform", "translate(0 " + profileHeight + ")")
-//         .attr("x", 0)
-//         .attr("y", -profileHeight + (5 * profileMargin.textSpacing))
-//         .style("text-anchor", "start")
-//         .text("Match winning rate: " + round(data[playerNumber]["win_rate"], 2) + " %");
-//
-//     profileSvg.append("text")
-//         .attr('class', 'playerProfileText')
-//         .attr('id', 'playerAce')
-//         .attr("transform", "translate(0 " + profileHeight + ")")
-//         .attr("x", 0)
-//         .attr("y", -profileHeight + (6 * profileMargin.textSpacing))
-//         .style("text-anchor", "start")
-//         .text("Average no. of aces per match: " + round(data[playerNumber]["mean_ace"], 2));
-//
-//     profileSvg.append("text")
-//         .attr('class', 'playerProfileText')
-//         .attr('id', 'playerDf')
-//         .attr("transform", "translate(0 " + profileHeight + ")")
-//         .attr("x", 0)
-//         .attr("y", -profileHeight + (7 * profileMargin.textSpacing))
-//         .style("text-anchor", "start")
-//         .text("Average no. of double faults per match: " + round(data[playerNumber]["mean_df"], 2));
-//
-//     // profileSvg.append('g')
-//     //     .enter()
-//     //     .append('image')
-//     //     .attr("xlink:href", "https://github.com/favicon.ico")
-//     //     .attr("transform", "translate(0 " + profileHeight + ")")
-//     //     .attr("x", profileWidth)
-//     //     .attr("y", -6)
-//     //     .attr("width", 16)
-//     //     .attr("height", 16);
-//
-//     // call bar chart function using a player object as an argument
-//     makeBarChart(data, playerNumber, 2);
-//
-//     updateBarchart(data);
-//
-// };
-
+// updates barchart on user generated input when dropdown menu is used
 function updateBarchart(data, number){
 
     playerNumber = number;
-
-    //playerNumber = Math.floor(Math.random() * 743);
 
       var butWin = document.getElementById("selectWin");
       var butAce = document.getElementById("selectAce");
@@ -274,18 +88,12 @@ function updateBarchart(data, number){
 
 };
 
+// renders barchart on page load
 function makeBarChart(data, playerNumber, statistic){
-
-    // // remove current svg's if others are added by clicking on dropdown
-    // if (d3.select("#barchart").select("svg")){
-    //     d3.select("#barchart").select("svg").remove();
-    // };
 
     d3.select('#barchart').remove();
 
-
     player = data[playerNumber]
-    //player = data[213];
 
     // create list of objects for the dropdown menus
     var selectData = [  { "label" : "Match Winning Rate (%)", "aus" : "win_rate_aus", "rg" : "win_rate_rg", "wim" : "win_rate_wim", "us" : "win_rate_us", "total" : "win_rate" },
@@ -299,8 +107,6 @@ function makeBarChart(data, playerNumber, statistic){
         {"tourney_name" : "Wimbledon", "stat" : player[selection.wim]},
         {"tourney_name" : "US Open", "stat" : player[selection.us]}
     ];
-
-    //console.log(player);
 
     // set dimensions for profile's side of svg canvas
     var barchartMargin = {
@@ -336,15 +142,12 @@ function makeBarChart(data, playerNumber, statistic){
     barSvg.call(barHelpTip);
 
     barSvg.append('text')
-        //.attr('id', 'test')
         .attr('font-family', 'FontAwesome')
         .attr('font-size', '30px' )
         .attr('x', barchartWidth)
         .attr('y', barchartMargin.top)
-        //.text(function(d) { return '\uf118' }); // smiley
-        // .text(function(d) { return '\uf128' }); // question mark
         .text(function(d) { return '\uf059' })
-        .on("mouseover", barHelpTip.show) // ensure tip appears and disappears
+        .on("mouseover", barHelpTip.show)
         .on("mouseout", barHelpTip.hide);
 
     // append chart title
@@ -356,36 +159,11 @@ function makeBarChart(data, playerNumber, statistic){
         .attr('text-anchor', 'middle')
         .text('Bar Chart of ' + player.name + "'s Grand Slam performance");
 
-    //
-    // // create dropdown menu and corresponding span for y axis variables
-    // var span = barSvg.append('span')
-    //     .text('Select y-axis variable: ');
-    //
-    // var yInput = barSvg.append('select')
-    //     .attr('id','ySelect')
-    //     .on('change',yChange)
-    //     .selectAll('option')
-    //     .data(selectData)
-    //     .enter()
-    //     .append('option')
-    //     .attr('value', function (d) { return d.text })
-    //     .text(function (d) { return d.label ;});
-    //
-    // // break for space between menus
-    // barSvg.append('br')
-
     // create ordinale scale for x variables and linear scale of y variables
     var xScale = d3.scaleOrdinal()
-        //.domain(["win_rate_aus", "win_rate_rg", "win_rate_wim", "win_rate_us"])
-        //.domain(["Australian Open", "Roland Garros", "Wimbledon", "US Open"])
         .range([0, barchartWidth]);
 
     var tournaments = ["Australian Open", "Roland Garros", "Wimbledon", "US Open"];
-
-    // var yScale = d3.scaleLinear()
-    //     //.domain(d3.extent(data, function(d) {return data.win_rate_aus})).nice()
-    //     .domain([0, 1]).nice()
-    //     .range([barchartHeight, 0]);
 
     var yScale = d3.scaleLinear()
 			.domain([0, d3.max(data, function(d){
@@ -424,41 +202,11 @@ function makeBarChart(data, playerNumber, statistic){
         .attr("y", function(d){
 			return yScale(+d.stat);
 		})
-        .on("mouseover", tip.show) // ensure tip appears and disappears
+        .on("mouseover", tip.show)
         .on("mouseout", tip.hide)
         .on("click", function(d) {
             return makePie(data, d.tourney_name, statistic, player.nationality)
-        })
-
-        // barSvg.selectAll('bar')
-		// 	.data(barchartData)
-		// 	.enter()
-		// 	.append('rect')
-		// 	.attr('class', 'bar')
-        //     .attr("x", function(d, i) {
-    	// 		return xScale(d);
-    	// 	})
-        //     .attr("y", function(d, i){
-    	// 		return barchartHeight;
-    	// 	})
-		// 	.attr("width", function (d, i) {
-		// 		return xScale.rangeBand()
-		// 	})
-		// 	.attr("fill", function (d, i) {
-		// 		return 'rgb(256, ' + Math.round(i / 2) + ', ' + i + ')'
-		// 	})
-		// 	.attr("height", 0)
-		// 	.transition()
-		// 	.duration(200)
-		// 	.delay(function (d, i) {
-		// 		return i * 50;
-		// 	})
-		// 	.attr("y", function (d, i) {
-		// 		return barchartHeight - yScale(d);
-		// 	})
-		// 	.attr("height", function (d, i) {
-		// 		return yScale(d);
-		// 	});
+        });
 
     // draw y axis
     barSvg.append("g")
@@ -489,7 +237,6 @@ function makeBarChart(data, playerNumber, statistic){
       	.attr("dy", "-.55em")
       	.attr("transform", "rotate(-45)" );
 
-
     for (var i = 0; i < tournaments.length; i++){
 
         // draw bar labels under x axis
@@ -501,62 +248,13 @@ function makeBarChart(data, playerNumber, statistic){
             .attr('y', barchartHeight + 15)
             .style('text-anchor', 'middle')
             .style("font-size", "8px")
-            // .attr("dx", "-.8em")
-          	// .attr("dy", "-.55em")
-          	//.attr("transform", "rotate(-45)" )
             .text(tournaments[i]);
 
     }
 
-
-    // var selector = d3.select("#drop")
-    // 	.append("select")
-    // 	.attr("id","dropdown")
-    // 	.on("change", function(d){
-    //     	selection = document.getElementById("dropdown");
-    //
-    //     	yScale.domain([0, d3.max(data, function(d){
-	// 			return +d[selection.value];})]);
-    //
-    //     	yAxis.scale(y);
-    //
-    //     	d3.selectAll(".rectangle")
-    //        		.transition()
-	//             .attr("height", function(d){
-	// 				return height - y(+d[selection.value]);
-	// 			})
-	// 			.attr("x", function(d, i){
-	// 				return (width / data.length) * i ;
-	// 			})
-	// 			.attr("y", function(d){
-	// 				return y(+d[selection.value]);
-	// 			})
-    //        		.ease("linear")
-    //        		.select("title")
-    //        		.text(function(d){
-    //        			return d.State + " : " + d[selection.value];
-    //        		});
-    //
-    //        	d3.selectAll("g.y.axis")
-    //        		.transition()
-    //        		.call(yAxis);
-    //
-    //      });
-    //
-    //  selector.selectAll("option")
-    //    .data(selectData)
-    //    .enter().append("option")
-    //    .attr("value", function(d){
-    //      return d.;
-    //    })
-    //    .text(function(d){
-    //      return d.label;
-    //    })
-
-    //makePie(data, "win_rate_wim");
-
 };
 
+// renders pie chart when specific bar is clicked
 function makePie(data, tournament, statistic, playerNationality){
 
     d3.select('#pieChart').remove();
@@ -708,28 +406,6 @@ function makePie(data, tournament, statistic, playerNationality){
             return d.stat;
         });
 
-    // var colors = d3.scaleQuantize()
-    //    .domain([0, 100])
-    //    .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
-    //    "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
-
-    // var color = d3.scaleOrdinal(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
-    // "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
-
-    //var color = d3.scaleLinear()
-    //    .domain([0, 100])
-    //    .range(["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6"]);
-
-    //var c20c = d3.scale.category20c();
-
-    // var color = d3.scaleOrdinal()
-    //     .domain([0,1])
-
-    // var color = d3.scaleOrdinal()
-    //     .domain([nationalities])
-    //     .range(colorbrewer.Spectral[nationalities.length])
-
-    // var color = d3.scaleOrdinal(["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262"]);
     countries =[];
     for (i = 0; i < pieData.length; i++){
         countries.push(pieData[i].country);
@@ -751,13 +427,6 @@ function makePie(data, tournament, statistic, playerNationality){
         .size(700)())
         .labelOffset(12)
         .scale(legendLines);
-
-    // // placing legend
-    // var legendSvg = d3.select("#divPie")
-    //     .append("svg")
-    //     .attr("id", "legendbox")
-    //     .attr("width", pieWidth)
-    //     .attr("height", pieHeight);
 
     // placing legend
     pieSvg.append("g")
@@ -833,10 +502,9 @@ function makePie(data, tournament, statistic, playerNationality){
 
 };
 
-// source: https://bl.ocks.org/d3noob/43a860bc0024792f8803bba8ca0d5ecd
+// renders dendrogram when page is loaded or when player is searched
+// adaptation of the following source: https://bl.ocks.org/d3noob/43a860bc0024792f8803bba8ca0d5ecd
 function makeTree(data, playerNumber){
-
-    //playerNumber = Math.floor(Math.random() * 743);
 
     d3.select('#tree').remove();
 
@@ -898,10 +566,8 @@ function makeTree(data, playerNumber){
         .attr('font-size', '30px' )
         .attr('x', treeWidth)
         .attr('y', treeMargin.top)
-        //.text(function(d) { return '\uf118' }); // smiley
-        // .text(function(d) { return '\uf128' }); // question mark
         .text(function(d) { return '\uf059' })
-        .on("mouseover", treeHelpTip.show) // ensure tip appears and disappears
+        .on("mouseover", treeHelpTip.show)
         .on("mouseout", treeHelpTip.hide);
 
     // append chart title
@@ -950,8 +616,6 @@ function makeTree(data, playerNumber){
 
       // Normalize for fixed-depth.
       nodes.forEach(function(d){ d.y = d.depth * 180});
-
-      // ****************** Nodes section ***************************
 
       // Update the nodes...
       var node = treeSvg.selectAll('g.node')
@@ -1030,8 +694,6 @@ function makeTree(data, playerNumber){
       nodeExit.select('text')
         .style('fill-opacity', 1e-6);
 
-      // ****************** links section ***************************
-
       // Update the links...
       var link = treeSvg.selectAll('path.link')
           .data(links, function(d) { return d.id; });
@@ -1094,6 +756,7 @@ function makeTree(data, playerNumber){
     // call bar chart function using a player object as an argument
     makeBarChart(data, playerNumber, 2);
 
+    // update barchart
     updateBarchart(data);
 
 };
