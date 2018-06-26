@@ -88,6 +88,10 @@ window.onload = function() {
 
         playerNames = getValues(data, "name");
 
+        makeTree(playerData, 213);
+        makeBarChart(playerData, 213, 0);
+        updateBarchart(playerData, 213);
+
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
@@ -646,7 +650,7 @@ function makePie(data, tournament, statistic, playerNationality){
         left: 35,
         right: 105
     };
-    pieOuterWidth = 425;
+    pieOuterWidth = 500;
     pieOuterHeight = 500;
     pieWidth = pieOuterWidth - pieMargin.left - pieMargin.right;
     pieHeight = pieOuterHeight - pieMargin.top - pieMargin.bottom;
@@ -660,6 +664,28 @@ function makePie(data, tournament, statistic, playerNationality){
         .attr('id', 'pieChart')
         .attr("width", pieOuterWidth)
         .attr("height", pieOuterHeight);
+
+    // create info box for tip containing age category and population size
+    var pieHelpTip = d3.tip()
+      .attr("class", "d3-tip")
+      .attr("id", "pieHelpTip")
+      .offset([-20, 0]).html(function(d, i) {
+       return "<strong>Country: </strong> <span style='color:white'>" +
+        + "</span>" + "<br>" + "Value: "});
+
+    pieSvg.call(pieHelpTip);
+
+    pieSvg.append('text')
+        //.attr('id', 'test')
+        .attr('font-family', 'FontAwesome')
+        .attr('font-size', '30px' )
+        .attr('x', pieWidth)
+        .attr('y', pieMargin.top)
+        //.text(function(d) { return '\uf118' }); // smiley
+        // .text(function(d) { return '\uf128' }); // question mark
+        .text(function(d) { return '\uf059' })
+        .on("mouseover", pieHelpTip.show) // ensure tip appears and disappears
+        .on("mouseout", pieHelpTip.hide);
 
     // append g element to center of pie chart svg canvas
     g = pieSvg.append("g").attr('transform', "translate(" + pieOuterWidth / 2 + ", " + pieOuterHeight / 2 +")");
@@ -703,7 +729,48 @@ function makePie(data, tournament, statistic, playerNationality){
     //     .domain([nationalities])
     //     .range(colorbrewer.Spectral[nationalities.length])
 
-    var color = d3.scaleOrdinal(["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262"]);
+    // var color = d3.scaleOrdinal(["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262"]);
+    countries =[];
+    for (i = 0; i < pieData.length; i++){
+        countries.push(pieData[i].country);
+    };
+
+    var color = d3.scaleOrdinal()
+        .domain(countries)
+        .range(colorbrewer.Set2[pieData.length]);
+
+    // create extra function to show full variablenames in legend
+    var legendLines = d3.scaleOrdinal()
+        .domain(countries)
+        .range(colorbrewer.Set2[pieData.length]);
+
+    // creating legend
+    var graphLegend = d3.legendColor()
+        .shape("path", d3.symbol()
+        .type(d3.symbolSquare)
+        .size(700)())
+        .labelOffset(12)
+        .scale(legendLines);
+
+    // // placing legend
+    // var legendSvg = d3.select("#divPie")
+    //     .append("svg")
+    //     .attr("id", "legendbox")
+    //     .attr("width", pieWidth)
+    //     .attr("height", pieHeight);
+
+    // placing legend
+    pieSvg.append("g")
+        .attr("id", "legendbox")
+        .attr("width", 300)
+        .attr("height", 300);
+
+    pieSvg.append("g")
+        .attr("id", "graphLegend")
+        .attr("transform", "translate(0, 300)");
+
+    pieSvg.select("#graphLegend")
+        .call(graphLegend);
 
     // create info box for tip containing age category and population size
     var pieTip = d3.tip()
