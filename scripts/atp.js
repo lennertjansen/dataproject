@@ -698,7 +698,7 @@ function makePie(data, tournament, statistic, playerNationality){
         .attr('y', pieMargin.top)
         .attr('font-size', '5px')
         .attr('text-anchor', 'middle')
-        .text("Donut chart of the average " + selection.label + " of various nationalities at " + tournament);
+        .text("The average Match Winning Rate of various  nationalities at " + tournament);
 
     var pie = d3.pie()
         .sort(null)
@@ -888,8 +888,7 @@ function makeTree(data, playerNumber){
       .attr("class", "d3-tip")
       .attr("id", "treeHelpTip")
       .offset([-20, 0]).html(function(d, i) {
-       return "<strong>Country: </strong> <span style='color:white'>" +
-        + "</span>" + "<br>" + "Value: "});
+       return "Imma type some shit on how to use this here bihhhhh bruh." + "<br>" + "broooooo" });
 
     treeSvg.call(treeHelpTip);
 
