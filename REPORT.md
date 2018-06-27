@@ -21,6 +21,7 @@ Under the hood, my application is built using two html files, on one of which al
 The functional backbone of my application is the JavaScript file "atp.js", inside which the most prominently utilized library is "d3.js". The following libraries are also applied and deserve an honorable mention: tip.js, d3-legend.js, colorbrewer.js, Bootstrap and jQuery. atp.js starts by running a window.onload function that imports and parses the JSON file accordingly. The initial visualizations are rendered for a fixed player, namely arguably the greatest tennis player of all time, Roger Federer. This is done by calling the functions makeTree, makeBarChart and makePie. Furthermore, and event-listening function is ran in the window.onload function that waits for user generated input in the aforementioned search bar. Using jQuery, this function calls the aforementioned visualization making functions and corresponding update functions (updateBarchart and updatePie).
 
 ### Challenges of development
+By far, the most challenging aspect of this project has been data manipulation. As can be read in my daily standup emails and PROCESS.md, I have spent the better part of two weeks toying with the data-set.
 
 ### Design choices and topics & ideas for future projects
 
