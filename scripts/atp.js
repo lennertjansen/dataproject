@@ -31,7 +31,6 @@ window.onload = function() {
         makeBarChart(playerData, 213, 0);
         updateBarchart(playerData, 213);
         makePie(playerData, "Wimbledon", 0, "SUI", 4);
-        // data, tournament, statistic, playerNationality, slices
 
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {

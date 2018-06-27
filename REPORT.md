@@ -18,6 +18,8 @@ Finally, the donut chart depicts the average match winning rate of all players o
 
 Under the hood, my application is built using two html files, on one of which all three visualizations are implemented, one JavaScript file, one CSS style sheet, a Python file that converts CSV to JSON, and another JavaScript file used for data manipulation. The latter two, however, are only ran once and are no longer needed during the actual running of the application.
 
+The functional backbone of my application is the JavaScript file "atp.js", inside which the most prominently utilized library is "d3.js". The following libraries are also applied and deserve an honorable mention: tip.js, d3-legend.js, colorbrewer.js, Bootstrap and jQuery. atp.js starts by running a window.onload function that imports and parses the JSON file accordingly. The initial visualizations are rendered for a fixed player, namely arguably the greatest tennis player of all time, Roger Federer. This is done by calling the functions makeTree, makeBarChart and makePie. Furthermore, and event-listening function is ran in the window.onload function that waits for user generated input in the aforementioned search bar. Using jQuery, this function calls the aforementioned visualization making functions and corresponding update functions (updateBarchart and updatePie).
+
 ### Challenges of development
 
 ### Design choices and topics & ideas for future projects
