@@ -517,7 +517,7 @@ function makePie(data, tournament, statistic, playerNationality, slices){
         .transition().delay(function(d,i) {
             return i * 5;
         })
-        .duration(500)
+        .duration(1500)
         .attrTween('d', function(d) {
             var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
             return function(t) {
