@@ -1,4 +1,6 @@
-## Code reviews by Jitse Schol
+## Code review by Jitse Schol
+
+### Levels
 comments: 3 (comments are clear when the are present, but they need to appear more consistently)
 names: 4 (good choice of variable and function names, little to no room for improvement)
 
@@ -12,8 +14,8 @@ structure: 3 (modules are reasonably compact, room for improvement though. Clear
 
 
 ### Remarks by Jitse:
-    Remove code that has been commented out.
-    Avoid using inline comments.
-    Add more comments, especially to the recently written blocks of code.
-    Review whether or not you are consistent in your spacing (i.e., spaces between operators and white lines).
-    Make sure the flow (i.e., order) of your code is logical.
+Remove code that has been commented out.
+Avoid using inline comments.
+Add more comments, especially to the recently written blocks of code.
+Review whether or not you are consistent in your spacing (i.e., spaces between operators and white lines).
+Make sure the flow (i.e., order) of your code is logical.
