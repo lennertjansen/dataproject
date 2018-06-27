@@ -101,35 +101,30 @@ function updatePie(data, tournament, statistic, playerNationality){
 
       but2.addEventListener("click", {
         handleEvent: function (event){
-          //makeBarChart(data, playerNumber, 1)
           makePie(data, tournament, statistic, playerNationality, 2);
         }
       });
 
       but3.addEventListener("click", {
         handleEvent: function (event) {
-         //makeBarChart(data, playerNumber, 2)
          makePie(data, tournament, statistic, playerNationality, 3);
         }
       });
 
       but4.addEventListener("click", {
         handleEvent: function (event) {
-          //makeBarChart(data, playerNumber, 2)
           makePie(data, tournament, statistic, playerNationality, 4);
         }
       });
 
       but5.addEventListener("click", {
         handleEvent: function (event) {
-          //makeBarChart(data, playerNumber, 2)
           makePie(data, tournament, statistic, playerNationality, 5);
         }
       });
 
       but6.addEventListener("click", {
         handleEvent: function (event){
-          //makeBarChart(data, playerNumber, 0)
           makePie(data, tournament, statistic, playerNationality, 6);
         }
       });
@@ -219,10 +214,11 @@ function makeBarChart(data, playerNumber, statistic){
 			})])
 			.range([barchartHeight, 0]);
 
-    // initialize both axes
+    // initialize x axis
     var xAxis = d3.axisBottom()
         .scale(xScale);
 
+    // initialize y axis
     var yAxis = d3.axisLeft()
         .scale(yScale);
 
@@ -424,15 +420,12 @@ function makePie(data, tournament, statistic, playerNationality, slices){
     pieSvg.call(pieHelpTip);
 
     pieSvg.append('text')
-        //.attr('id', 'test')
         .attr('font-family', 'FontAwesome')
         .attr('font-size', '30px' )
-        .attr('x', pieWidth)
-        .attr('y', pieMargin.top)
-        //.text(function(d) { return '\uf118' }); // smiley
-        // .text(function(d) { return '\uf128' }); // question mark
+        .attr('x', pieWidth + pieMargin.right)
+        .attr('y', pieMargin.top + 30)
         .text(function(d) { return '\uf059' })
-        .on("mouseover", pieHelpTip.show) // ensure tip appears and disappears
+        .on("mouseover", pieHelpTip.show)
         .on("mouseout", pieHelpTip.hide);
 
     // append g element to center of pie chart svg canvas
@@ -446,7 +439,7 @@ function makePie(data, tournament, statistic, playerNationality, slices){
         .attr('y', pieMargin.top)
         .attr('font-size', '5px')
         .attr('text-anchor', 'middle')
-        .text("The average Match Winning Rate of various  nationalities at " + tournament);
+        .text("The winning rate of various nationalities at " + tournament);
 
     var pie = d3.pie()
         .sort(null)
@@ -606,7 +599,11 @@ function makeTree(data, playerNumber){
       .attr("class", "d3-tip")
       .attr("id", "treeHelpTip")
       .offset([-20, 0]).html(function(d, i) {
-       return "Imma type some shit on how to use this here bihhhhh bruh." + "<br>" + "broooooo" });
+       return "The collapsible tree diagram (or dendrogram) serves as a tennis player's profile."
+       + "<br>" + "When clicked, the tennis ball 'nodes' ultimately expand into end nodes."
+       + "<br>" + "The top three end nodes contain a player's personal information."
+       + "<br>" + "Whereas the bottom three end nodes contain a player's match statistics."
+       + "<br>" + "The latter three are clickable and in turn update the Bar Chart below with the desired match statistic."});
 
     treeSvg.call(treeHelpTip);
 
