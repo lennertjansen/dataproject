@@ -36,9 +36,7 @@ window.onload = function() {
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                //console.log(value)
                 autocomplete(document.getElementById("myInput"), playerNames);
-                //autocomplete(document.getElementById("myInput"), playerNames).toLowerCase();
                 for (i = 0; i < playerData.length; i++){
                     if (value == playerData[i].name.toLowerCase()){
                         makeTree(playerData, i);
@@ -179,8 +177,9 @@ function makeBarChart(data, playerNumber, statistic){
       .attr("class", "d3-tip")
       .attr("id", "barHelpTip")
       .offset([-20, 0]).html(function(d, i) {
-       return "<strong>Country: </strong> <span style='color:white'>" +
-        + "</span>" + "<br>" + "Value: "});
+       return "Welcome to the bar chart segment of my page. Here we can observed the selected player's performance on the four ATP Grand Slam tournaments"
+       + "<br>" + "The order of the bars correspond to the order in which the tournaments are held in a year (from left to right)."
+       + "<br>" + "When clicked on, a Grand Slam bar updates the donut chart to the right of this bar chart."});
 
     barSvg.call(barHelpTip);
 
@@ -414,8 +413,9 @@ function makePie(data, tournament, statistic, playerNationality, slices){
       .attr("class", "d3-tip")
       .attr("id", "pieHelpTip")
       .offset([-20, 0]).html(function(d, i) {
-       return "<strong>Country: </strong> <span style='color:white'>" +
-        + "</span>" + "<br>" + "Value: "});
+       return "Finally, we arrive at the donut (or pie) chart depicting the match winning rates of various countries at a selected Grand Slam."
+       + "<br>" + "The visualisation has been implemented such that the country from which the selected player resides, as well as the country in which the selected Grand Slam is hosted are added to the visualisation."
+       + "<br>" + "Furthermore, the user can select up to six of the top performing nations to be added to the diagram for comparison."});
 
     pieSvg.call(pieHelpTip);
 
@@ -917,31 +917,31 @@ function autocomplete(inp, arr) {
         }
       }
   });
-  /*execute a function presses a key on the keyboard:*/
-  inp.addEventListener("keydown", function(e) {
-      var x = document.getElementById(this.id + "autocomplete-list");
-      if (x) x = x.getElementsByTagName("div");
-      if (e.keyCode == 40) {
-        /*If the arrow DOWN key is pressed,
-        increase the currentFocus variable:*/
-        currentFocus++;
-        /*and and make the current item more visible:*/
-        addActive(x);
-      } else if (e.keyCode == 38) { //up
-        /*If the arrow UP key is pressed,
-        decrease the currentFocus variable:*/
-        currentFocus--;
-        /*and and make the current item more visible:*/
-        addActive(x);
-      } else if (e.keyCode == 13) {
-        /*If the ENTER key is pressed, prevent the form from being submitted,*/
-        e.preventDefault();
-        if (currentFocus > -1) {
-          /*and simulate a click on the "active" item:*/
-          if (x) x[currentFocus].click();
-        }
-      }
-  });
+  // /*execute a function presses a key on the keyboard:*/
+  // inp.addEventListener("keydown", function(e) {
+  //     var x = document.getElementById(this.id + "autocomplete-list");
+  //     if (x) x = x.getElementsByTagName("div");
+  //     if (e.keyCode == 40) {
+  //       /*If the arrow DOWN key is pressed,
+  //       increase the currentFocus variable:*/
+  //       currentFocus++;
+  //       /*and and make the current item more visible:*/
+  //       addActive(x);
+  //     } else if (e.keyCode == 38) { //up
+  //       /*If the arrow UP key is pressed,
+  //       decrease the currentFocus variable:*/
+  //       currentFocus--;
+  //       /*and and make the current item more visible:*/
+  //       addActive(x);
+  //     } else if (e.keyCode == 13) {
+  //       /*If the ENTER key is pressed, prevent the form from being submitted,*/
+  //       e.preventDefault();
+  //       if (currentFocus > -1) {
+  //         /*and simulate a click on the "active" item:*/
+  //         if (x) x[currentFocus].click();
+  //       }
+  //     }
+  // });
   function addActive(x) {
     /*a function to classify an item as "active":*/
     if (!x) return false;
