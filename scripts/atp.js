@@ -30,6 +30,8 @@ window.onload = function() {
         makeTree(playerData, 213);
         makeBarChart(playerData, 213, 0);
         updateBarchart(playerData, 213);
+        makePie(playerData, "Wimbledon", 0, "SUI", 4);
+        // data, tournament, statistic, playerNationality, slices
 
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {
@@ -83,6 +85,52 @@ function updateBarchart(data, number){
       butDf.addEventListener("click", {
         handleEvent: function (event) {
           makeBarChart(data, playerNumber, 2)
+        }
+      });
+
+};
+
+// updates the piechart, giving the user the option to pick the number of slices
+function updatePie(data, tournament, statistic, playerNationality){
+
+      var but2 = document.getElementById("button2");
+      var but3 = document.getElementById("button3");
+      var but4 = document.getElementById("button4");
+      var but5 = document.getElementById("button5");
+      var but6 = document.getElementById("button6");
+
+      but2.addEventListener("click", {
+        handleEvent: function (event){
+          //makeBarChart(data, playerNumber, 1)
+          makePie(data, tournament, statistic, playerNationality, 2);
+        }
+      });
+
+      but3.addEventListener("click", {
+        handleEvent: function (event) {
+         //makeBarChart(data, playerNumber, 2)
+         makePie(data, tournament, statistic, playerNationality, 3);
+        }
+      });
+
+      but4.addEventListener("click", {
+        handleEvent: function (event) {
+          //makeBarChart(data, playerNumber, 2)
+          makePie(data, tournament, statistic, playerNationality, 4);
+        }
+      });
+
+      but5.addEventListener("click", {
+        handleEvent: function (event) {
+          //makeBarChart(data, playerNumber, 2)
+          makePie(data, tournament, statistic, playerNationality, 5);
+        }
+      });
+
+      but6.addEventListener("click", {
+        handleEvent: function (event){
+          //makeBarChart(data, playerNumber, 0)
+          makePie(data, tournament, statistic, playerNationality, 6);
         }
       });
 
@@ -205,7 +253,7 @@ function makeBarChart(data, playerNumber, statistic){
         .on("mouseover", tip.show)
         .on("mouseout", tip.hide)
         .on("click", function(d) {
-            return makePie(data, d.tourney_name, statistic, player.nationality)
+            return makePie(data, d.tourney_name, statistic, player.nationality, 4)
         });
 
     // draw y axis
@@ -255,7 +303,9 @@ function makeBarChart(data, playerNumber, statistic){
 };
 
 // renders pie chart when specific bar is clicked
-function makePie(data, tournament, statistic, playerNationality){
+function makePie(data, tournament, statistic, playerNationality, slices){
+
+    updatePie(data, tournament, statistic, playerNationality);
 
     d3.select('#pieChart').remove();
 
@@ -333,7 +383,7 @@ function makePie(data, tournament, statistic, playerNationality){
     ascendingOrder(pieData, "stat")
 
     // create shortened list of data objects containing the top 4 countries and nationality of selected player
-    pieData = pieData.slice(pieData.length - 4, pieData.length);
+    pieData = pieData.slice(pieData.length - slices, pieData.length);
 
     pieData.push(playerObject[0]);
     pieData.push(countryObject[0]);

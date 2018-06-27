@@ -73,3 +73,6 @@ Fixed the bugs in the div placement. The visualisations no longer jump from loca
 Started adding question mark icons which will display a usage-manual when hovered over by the user.
 
 Fixing the title and legend placement.
+
+# Wednesday, June 27th
+Added a dropdown menu to the piechart, giving the user the option to pick the number of slices.
