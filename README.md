@@ -1,4 +1,4 @@
-[My project page](https://lennertjansen.github.io/dataproject/)
+[My project page](https://lennertjansen.github.io/dataproject/scripts/atp.html)
 
 # Final Project - Minor Programming, Spring 2018
 
