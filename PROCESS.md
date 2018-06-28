@@ -88,3 +88,4 @@ Finished the placement of the respective div-elements.
 Finalized the titles, legends, and help tooltips.
 
 # Thursday, June 28th
+Created LICENSE.md
