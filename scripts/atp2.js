@@ -2,13 +2,13 @@
 *
 * Name: Lennert Jansen
 * Student number: 10488952
-* Date of submission: 28 June 2018
+* Date: 11 June 2018
 * Final Programming Project: ATP Match Data Visualisations
 *
 */
 
 
-// execute when DOM is loaded and calls all functions
+// execute when DOM is loaded
 window.onload = function() {
 
     // append segment to body containing author and assignment information
@@ -27,20 +27,17 @@ window.onload = function() {
 
         playerNames = getValues(data, "name");
 
-        // ensure initial visualizations display Roger Federer's statistics
         makeTree(playerData, 213);
         makeBarChart(playerData, 213, 0);
         updateBarchart(playerData, 213);
         makePie(playerData, "Wimbledon", 0, "SUI", 4);
 
-        // eventlistener autocompletes searched term and renders graphs
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                autocomplete(document.getElementById("myInput"), playerNames);
+                // autocomplete(document.getElementById("myInput"), playerNames);
                 for (i = 0; i < playerData.length; i++){
                     if (value == playerData[i].name.toLowerCase()){
-                        console.log(playerData[i]);
                         makeTree(playerData, i);
                         makeBarChart(playerData, i, 0);
                         updateBarchart(playerData, i);
@@ -61,291 +58,81 @@ window.onload = function() {
 
 };
 
-// renders dendrogram when page is loaded or when player is searched
-// adaptation of the following source: https://bl.ocks.org/d3noob/43a860bc0024792f8803bba8ca0d5ecd
-function makeTree(data, playerNumber){
+// updates barchart on user generated input when dropdown menu is used
+function updateBarchart(data, number){
 
-    // remove current dendrogram
-    d3.select('#tree').remove();
+    playerNumber = number;
 
-    // create variable for selected player by indexing in list of all players
-    player = data[playerNumber];
+      var butWin = document.getElementById("selectWin");
+      var butAce = document.getElementById("selectAce");
+      var butDf = document.getElementById("selectDf");
 
-    // create data object for dendrogram containing necessary data exclusively
-    var treeData =
-    {
-    "name": player.name,
-    "children": [
-      {
-        "name": "Personal Stats",
-        "children": [
-          { "name": "Nationality: " + player.nationality },
-          { "name": "Height: " + player.height + " cm" },
-          { "name" : "Hand: " + player.hand}
-
-        ]
-      },
-      {
-          "name": "Match Stats" ,
-          "children" : [
-              { "name" : "Match Winning Rate: " + round(player.win_rate * 100, 2) + "%" },
-              { "name" : "Average No. of Aces per Match: " + round(player.mean_ace, 2)},
-              { "name" : "Average No. of Double Faults per Match: " + round(player.mean_df, 2)}
-          ]
-      }
-    ]
-    };
-
-    // set the dimensions and margins of the diagram
-    var treeMargin = {top: 40, right: 90, bottom: 30, left: 200},
-        treeOuterWidth = 1000;
-        treeOuterHeight = 500;
-        treeWidth = treeOuterWidth - treeMargin.left - treeMargin.right,
-        treeHeight = treeOuterHeight - treeMargin.top - treeMargin.bottom;
-
-    // append the svg object to the body of the page
-    var treeSvg = d3.select("#divTree").append("svg").attr("id", "tree")
-        .attr("width", treeOuterWidth)
-        .attr("height", treeOuterHeight)
-        .append("g")
-        .attr("transform", "translate("
-              + treeMargin.left + "," + treeMargin.top + ")");
-
-    // create info box for tip containing age category and population size
-    var treeHelpTip = d3.tip()
-      .attr("class", "d3-tip")
-      .attr("id", "treeHelpTip")
-      .offset([-20, 0]).html(function(d, i) {
-       return "The collapsible tree diagram (or dendrogram) serves as a tennis player's profile."
-       + "<br>" + "When clicked, the tennis ball 'nodes' ultimately expand into end nodes."
-       + "<br>" + "The top three end nodes contain a player's personal information."
-       + "<br>" + "Whereas the bottom three end nodes contain a player's match statistics."
-       + "<br>" + "The latter three are clickable and in turn update the Bar Chart below with the desired match statistic."});
-
-    // call dendrogram help tooltip
-    treeSvg.call(treeHelpTip);
-
-    treeSvg.append('text')
-        //.attr('id', 'test')
-        .attr('font-family', 'FontAwesome')
-        .attr('font-size', '30px' )
-        .attr('x', treeWidth)
-        .attr('y', treeMargin.top)
-        .text(function(d) { return '\uf059' })
-        .on("mouseover", treeHelpTip.show)
-        .on("mouseout", treeHelpTip.hide);
-
-    // append chart title
-    treeSvg.append("text")
-        .attr('class', 'chartTitle')
-        .attr('id', 'treeTitle')
-        .attr('x', treeWidth * (3 / 4))
-        .attr('y', treeMargin.top)
-        .attr('text-anchor', 'end')
-        .text('Collapsible Tree Diagram of ' + player.name)
-
-    // declare variables for iterations and duration
-    var i = 0,
-        duration = 750,
-        root;
-
-    // declares a tree layout and assigns the size
-    var treemap = d3.tree().size([treeHeight, treeWidth]);
-
-    // assigns parent, children, height, depth
-    root = d3.hierarchy(treeData, function(d) { return d.children; });
-    root.x0 = treeHeight / 2;
-    root.y0 = 0;
-
-    // collapse after the second level
-    root.children.forEach(collapse);
-
-    update(root);
-
-    // collapse the node and all it's children
-    function collapse(d){
-
-    if(d.children){
-
-        d._children = d.children;
-
-        d._children.forEach(collapse);
-
-        d.children = null;
-
-    };
-    };
-
-    // update functions for nodes and links
-    function update(source){
-
-      // assigns the x and y position for the nodes
-      var treeData = treemap(root);
-
-      // compute the new tree layout
-      var nodes = treeData.descendants(),
-          links = treeData.descendants().slice(1);
-
-      // normalize for fixed-depth
-      nodes.forEach(function(d){ d.y = d.depth * 180});
-
-      // update the nodes
-      var node = treeSvg.selectAll('g.node')
-        .data(nodes, function(d) {return d.id || (d.id = ++i); });
-
-      // enter any new modes at the parent's previous position
-      var nodeEnter = node.enter().append('g')
-          .attr('class', 'node')
-          .attr("transform", function(d) {
-            return "translate(" + source.y0 + "," + source.x0 + ")";
-        })
-        .on('click', click);
-
-    // add Circle for the nodes
-    nodeEnter.append('circle')
-        .attr('class', 'node')
-        .attr('r', 1e-6)
-        .style("fill", function(d) {
-            return d._children ? "LawnGreen" : "#fff";
-        })
-        .on('click', function(d){
-            if(d._children == undefined ){
-                if (d.data.name == "Match Winning Rate: " + round(player.win_rate * 100, 2) + "%" ){
-                    return makeBarChart(data, playerNumber, 0);
-                } else if (d.data.name == "Average No. of Aces per Match: " + round(player.mean_ace, 2)){
-                    return makeBarChart(data, playerNumber, 1);
-                } else if (d.data.name == "Average No. of Double Faults per Match: " + round(player.mean_df, 2)){
-                    return makeBarChart(data, playerNumber, 2);
-                };
-            };
-        });
-
-      // add labels for the nodes
-      nodeEnter.append('text')
-          .attr("dy", ".35em")
-          .attr("x", function(d) {
-              return d.children || d._children ? -13 : 13;
-          })
-          .attr("text-anchor", function(d) {
-              return d.children || d._children ? "end" : "start";
-          })
-          .text(function(d) { return d.data.name; });
-
-      // update the nodes
-      var nodeUpdate = nodeEnter.merge(node);
-
-      // transition to the proper position for the node
-      nodeUpdate.transition()
-        .duration(duration)
-        .attr("transform", function(d) {
-            return "translate(" + d.y + "," + d.x + ")";
-         });
-
-      // update the node attributes and style
-      nodeUpdate.select('circle.node')
-        .attr('r', 10)
-        .style("fill", function(d) {
-            return d._children ? "LawnGreen" : "#fff";
-        })
-        .attr('cursor', 'pointer');
-
-      // remove any exiting nodes
-      var nodeExit = node.exit().transition()
-          .duration(duration)
-          .attr("transform", function(d) {
-              return "translate(" + source.y + "," + source.x + ")";
-          })
-          .remove();
-
-      // on exit reduce the node circles size to 0
-      nodeExit.select('circle')
-        .attr('r', 1e-6);
-
-      // on exit reduce the opacity of text labels
-      nodeExit.select('text')
-        .style('fill-opacity', 1e-6);
-
-      // update links between nodes
-      var link = treeSvg.selectAll('path.link')
-          .data(links, function(d) { return d.id; });
-
-      // enter any new links at the parent's previous position
-      var linkEnter = link.enter().insert('path', "g")
-          .attr("class", "link")
-          .attr('d', function(d){
-            var o = {x: source.x0, y: source.y0}
-            return diagonal(o, o)
-          });
-
-      // update the links between nodes
-      var linkUpdate = linkEnter.merge(link);
-
-      // transition back to the parent element position
-      linkUpdate.transition()
-          .duration(duration)
-          .attr('d', function(d){ return diagonal(d, d.parent) });
-
-      // remove any exiting links
-      var linkExit = link.exit().transition()
-          .duration(duration)
-          .attr('d', function(d) {
-            var o = {x: source.x, y: source.y}
-            return diagonal(o, o)
-          })
-          .remove();
-
-      // store the old positions for transition
-      nodes.forEach(function(d){
-        d.x0 = d.x;
-        d.y0 = d.y;
+      butWin.addEventListener("click", {
+        handleEvent: function (event){
+          makeBarChart(data, playerNumber, 0)
+        }
       });
 
-      // creates a curved (diagonal) path from parent to the child nodes
-      function diagonal(s, d) {
+      butAce.addEventListener("click", {
+        handleEvent: function (event){
+          makeBarChart(data, playerNumber, 1)
+        }
+      });
 
-        path = `M ${s.y} ${s.x}
-                C ${(s.y + d.y) / 2} ${s.x},
-                  ${(s.y + d.y) / 2} ${d.x},
-                  ${d.y} ${d.x}`
+      butDf.addEventListener("click", {
+        handleEvent: function (event) {
+          makeBarChart(data, playerNumber, 2)
+        }
+      });
 
-        return path
-      }
+};
 
-      // toggle children on click
-      function click(d) {
-        if (d.children){
+// updates the piechart, giving the user the option to pick the number of slices
+function updatePie(data, tournament, statistic, playerNationality){
 
-            d._children = d.children;
+      var but2 = document.getElementById("button2");
+      var but3 = document.getElementById("button3");
+      var but4 = document.getElementById("button4");
+      var but5 = document.getElementById("button5");
+      var but6 = document.getElementById("button6");
 
-            d.children = null;
+      but2.addEventListener("click", {
+        handleEvent: function (event){
+          makePie(data, tournament, statistic, playerNationality, 2);
+        }
+      });
 
-          } else {
-            d.children = d._children;
+      but3.addEventListener("click", {
+        handleEvent: function (event) {
+         makePie(data, tournament, statistic, playerNationality, 3);
+        }
+      });
 
-            d._children = null;
+      but4.addEventListener("click", {
+        handleEvent: function (event) {
+          makePie(data, tournament, statistic, playerNationality, 4);
+        }
+      });
 
-          }
+      but5.addEventListener("click", {
+        handleEvent: function (event) {
+          makePie(data, tournament, statistic, playerNationality, 5);
+        }
+      });
 
-        update(d);
-
-    };
-    }
-
-    // call bar chart function using a player object as an argument
-    makeBarChart(data, playerNumber, 2);
-
-    // update barchart
-    updateBarchart(data);
+      but6.addEventListener("click", {
+        handleEvent: function (event){
+          makePie(data, tournament, statistic, playerNationality, 6);
+        }
+      });
 
 };
 
 // renders barchart on page load
 function makeBarChart(data, playerNumber, statistic){
 
-    // clear current visualization
     d3.select('#barchart').remove();
 
-    // select relevant player data by indexing in list of all players
     player = data[playerNumber]
 
     // create list of objects for the dropdown menus
@@ -355,7 +142,6 @@ function makeBarChart(data, playerNumber, statistic){
                     ];
     var selection = selectData[statistic];
 
-    // create data object containing data needed for barchart exclusively
     var barchartData = [ {"tourney_name" : "Australian Open", "stat" : player[selection.aus]},
         {"tourney_name" : "Roland Garros", "stat" : player[selection.rg]},
         {"tourney_name" : "Wimbledon", "stat" : player[selection.wim]},
@@ -394,10 +180,8 @@ function makeBarChart(data, playerNumber, statistic){
        + "<br>" + "The order of the bars correspond to the order in which the tournaments are held in a year (from left to right)."
        + "<br>" + "When clicked on, a Grand Slam bar updates the donut chart to the right of this bar chart."});
 
-    // call help tooltip function for bars
     barSvg.call(barHelpTip);
 
-    // append question mark for help tooltip
     barSvg.append('text')
         .attr('font-family', 'FontAwesome')
         .attr('font-size', '30px' )
@@ -420,10 +204,8 @@ function makeBarChart(data, playerNumber, statistic){
     var xScale = d3.scaleOrdinal()
         .range([0, barchartWidth]);
 
-    // list containing four tournament names in most readable form
     var tournaments = ["Australian Open", "Roland Garros", "Wimbledon", "US Open"];
 
-    // create d3 scale for y variable
     var yScale = d3.scaleLinear()
 			.domain([0, d3.max(data, function(d){
 				return +d[selection.total];
@@ -445,10 +227,8 @@ function makeBarChart(data, playerNumber, statistic){
          return "<strong>Tournament: </strong> <span style='color:grey'>" + d.tourney_name
           + "</span>" + "<br>" + "Value: " + round(d.stat, 3) + "<br>"});
 
-    // call tooltio function for every bar
     barSvg.call(tip);
 
-    // render rect element for every variable
     barSvg.selectAll("bar")
         .data(barchartData)
         .enter()
@@ -499,9 +279,9 @@ function makeBarChart(data, playerNumber, statistic){
       	.attr("dy", "-.55em")
       	.attr("transform", "rotate(-45)" );
 
-    // draw bar labels under x axis
     for (var i = 0; i < tournaments.length; i++){
 
+        // draw bar labels under x axis
         barSvg.append("text")
             .attr('class', 'axisLabel')
             .attr('id', 'xAxisLabel')
@@ -512,17 +292,15 @@ function makeBarChart(data, playerNumber, statistic){
             .style("font-size", "8px")
             .text(tournaments[i]);
 
-    };
+    }
 
 };
 
 // renders pie chart when specific bar is clicked
 function makePie(data, tournament, statistic, playerNationality, slices){
 
-    // call update pie function so it can listen voor events in dropdown menu
     updatePie(data, tournament, statistic, playerNationality);
 
-    // clear current chart
     d3.select('#pieChart').remove();
 
     // create list of objects for the dropdown menus
@@ -532,7 +310,6 @@ function makePie(data, tournament, statistic, playerNationality, slices){
                     ];
     var selection = selectData[statistic];
 
-    // find corresponding IOC nation code for specific tournament
     if (tournament == "Roland Garros"){
         tournament_code = "win_rate_rg";
         tournament_country = "FRA"
@@ -549,12 +326,10 @@ function makePie(data, tournament, statistic, playerNationality, slices){
     else{
         tournament_code = "win_rate_us"
         tournament_country = "USA"
-    };
+    }
 
-    // create empty array in which a list of nation IOC codes will be stored
     var nationalities = [];
 
-    // iterate through data and find all nationalities
     for (let i = 0; i < data.length; i++){
 
         if (!nationalities.includes(data[i].nationality)){
@@ -565,10 +340,8 @@ function makePie(data, tournament, statistic, playerNationality, slices){
 
     };
 
-    // create empty list in which the data needed for donut chart will be stored
     pieData = [];
 
-    // iterate through data using nationalities and find filter data for chart
     for (let i = 0; i < nationalities.length; i++){
 
         country_sum = 0;
@@ -585,18 +358,18 @@ function makePie(data, tournament, statistic, playerNationality, slices){
 
             };
 
+
         };
 
         pieObject = {
             "country" : nationalities[i],
             "stat" : country_rate_sum / country_sum
-        };
+        }
 
         pieData.push(pieObject);
 
     };
 
-    // ensure the selected player's nationality and host country are included
     playerObject = getObjects(pieData, "country", playerNationality);
     countryObject = getObjects(pieData, "country", tournament_country);
 
@@ -605,11 +378,12 @@ function makePie(data, tournament, statistic, playerNationality, slices){
 
     // create shortened list of data objects containing the top 4 countries and nationality of selected player
     pieData = pieData.slice(pieData.length - slices, pieData.length);
+
     pieData.push(playerObject[0]);
     pieData.push(countryObject[0]);
 
-    // remove duplicate nationalities from pie chart data
     pieData = removeDuplicates(pieData, "country");
+
 
     // set dimensions for the pie chart's side of svg canvas
     var pieMargin = {
@@ -637,15 +411,13 @@ function makePie(data, tournament, statistic, playerNationality, slices){
     var pieHelpTip = d3.tip()
       .attr("class", "d3-tip")
       .attr("id", "pieHelpTip")
-      .offset([-20, 0]).html(function(d, i){
+      .offset([-20, 0]).html(function(d, i) {
        return "Finally, we arrive at the donut (or pie) chart depicting the match winning rates of various countries at a selected Grand Slam."
        + "<br>" + "The visualisation has been implemented such that the country from which the selected player resides, as well as the country in which the selected Grand Slam is hosted are added to the visualisation."
        + "<br>" + "Furthermore, the user can select up to six of the top performing nations to be added to the diagram for comparison."});
 
-    // call help tooltip function
     pieSvg.call(pieHelpTip);
 
-    // append question mark glyphicon to svg canvas in upper right corner
     pieSvg.append('text')
         .attr('font-family', 'FontAwesome')
         .attr('font-size', '30px' )
@@ -668,22 +440,19 @@ function makePie(data, tournament, statistic, playerNationality, slices){
         .attr('text-anchor', 'middle')
         .text("The winning rate of various nationalities at " + tournament);
 
-    // create variable for pie chart using d3's built in function
     var pie = d3.pie()
         .sort(null)
-        .startAngle(1.1 * Math.PI)
-        .endAngle(3.1 * Math.PI)
-        .value(function(d){
+        .startAngle(1.1*Math.PI)
+        .endAngle(3.1*Math.PI)
+        .value(function(d) {
             return d.stat;
         });
 
-    // countries for legend
     countries =[];
     for (i = 0; i < pieData.length; i++){
         countries.push(pieData[i].country);
     };
 
-    // create ordinal colorscale for legend and piechart using colorbrewer
     var color = d3.scaleOrdinal()
         .domain(countries)
         .range(colorbrewer.Set2[pieData.length]);
@@ -707,10 +476,10 @@ function makePie(data, tournament, statistic, playerNationality, slices){
         .attr("width", 300)
         .attr("height", 300);
 
-    // append legend
     pieSvg.append("g")
         .attr("id", "graphLegend")
-        .attr("transform", "translate(0, 100)");
+        .attr("transform", "translate(0, 300)");
+
     pieSvg.select("#graphLegend")
         .call(graphLegend);
 
@@ -722,7 +491,6 @@ function makePie(data, tournament, statistic, playerNationality, slices){
          return "<strong>Country: </strong> <span style='color:white'>" + d.data.country
           + "</span>" + "<br>" + "Value: " + round(d.data.stat, 2)});
 
-    // call tooltip function for pie slices
     pieSvg.call(pieTip);
 
     // set sizes of outer and inner radii, respectively
@@ -739,17 +507,18 @@ function makePie(data, tournament, statistic, playerNationality, slices){
 
     // add our generated arcs to create paths for each of the pie / donut wedges
     arc.append("path")
+        //.attr("d", path)
         .attr("fill", function(d, i) {
             return color(i);
         })
-        .on("mouseover", pieTip.show)
+        .on("mouseover", pieTip.show) // ensure tip appears and disappears
         .on("mouseout", pieTip.hide)
         .transition().delay(function(d,i) {
             return i * 5;
         })
-        .duration(750)
+        .duration(1500)
         .attrTween('d', function(d) {
-            var i = d3.interpolate(d.startAngle + 0.1, d.endAngle);
+            var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
             return function(t) {
                 d.endAngle = i(t);
                 return path(d)
@@ -763,7 +532,6 @@ function makePie(data, tournament, statistic, playerNationality, slices){
         .attr("r", radius * 0.6)
         .style("fill", '#E7E7E7');
 
-    // append tournament name to center of donut chart
     pieSvg.append('text')
         .attr('transform', "translate(" + pieOuterWidth / 2 + ", " + pieOuterHeight / 2 +")")
         .attr('class', 'center-txt type')
@@ -776,71 +544,266 @@ function makePie(data, tournament, statistic, playerNationality, slices){
 
 };
 
-// updates barchart on user generated input when dropdown menu is used
-function updateBarchart(data, number){
+// renders dendrogram when page is loaded or when player is searched
+// adaptation of the following source: https://bl.ocks.org/d3noob/43a860bc0024792f8803bba8ca0d5ecd
+function makeTree(data, playerNumber){
 
-    playerNumber = number;
+    d3.select('#tree').remove();
 
-    // assign variables to eventlistening DOM elements from dropdown menu
-    var butWin = document.getElementById("selectWin");
-    var butAce = document.getElementById("selectAce");
-    var butDf = document.getElementById("selectDf");
+    player = data[playerNumber];
 
-    // update barchart function when user clicks on certain dropdown item
-    butWin.addEventListener("click", {
-    handleEvent: function (event){
-      makeBarChart(data, playerNumber, 0)
-    }
-    });
-    butAce.addEventListener("click", {
-    handleEvent: function (event){
-      makeBarChart(data, playerNumber, 1)
-    }
-    });
-    butDf.addEventListener("click", {
-    handleEvent: function (event) {
-      makeBarChart(data, playerNumber, 2)
-    }
-    });
+    var treeData =
+    {
+    "name": player.name,
+    "children": [
+      {
+        "name": "Personal Stats",
+        "children": [
+          { "name": "Nationality: " + player.nationality },
+          { "name": "Height: " + player.height + " cm" },
+          { "name" : "Hand: " + player.hand}
 
-};
+        ]
+      },
+      {
+          "name": "Match Stats" ,
+          "children" : [
+              { "name" : "Match Winning Rate: " + round(player.win_rate * 100, 2) + "%" },
+              { "name" : "Average No. of Aces per Match: " + round(player.mean_ace, 2)},
+              { "name" : "Average No. of Double Faults per Match: " + round(player.mean_df, 2)}
+          ]
+      }
+    ]
+    };
 
-// updates the piechart, giving the user the option to pick the number of slices
-function updatePie(data, tournament, statistic, playerNationality){
+    // set the dimensions and margins of the diagram
+    var treeMargin = {top: 40, right: 90, bottom: 30, left: 200},
+        treeOuterWidth = 1000;
+        treeOuterHeight = 500;
+        treeWidth = treeOuterWidth - treeMargin.left - treeMargin.right,
+        treeHeight = treeOuterHeight - treeMargin.top - treeMargin.bottom;
 
-    // assign variables to every pie chart dropdown item when clicked on
-    var but2 = document.getElementById("button2");
-    var but3 = document.getElementById("button3");
-    var but4 = document.getElementById("button4");
-    var but5 = document.getElementById("button5");
-    var but6 = document.getElementById("button6");
+    // append the svg object to the body of the page
+    // appends a 'group' element to 'svg'
+    // moves the 'group' element to the top left margin
+    var treeSvg = d3.select("#divTree").append("svg").attr("id", "tree")
+        .attr("width", treeOuterWidth)
+        .attr("height", treeOuterHeight)
+        .append("g")
+        .attr("transform", "translate("
+              + treeMargin.left + "," + treeMargin.top + ")");
 
-    // update donut chart accordingly for every possible dropdown menu event
-    but2.addEventListener("click", {
-    handleEvent: function (event){
-      makePie(data, tournament, statistic, playerNationality, 2);
+    // create info box for tip containing age category and population size
+    var treeHelpTip = d3.tip()
+      .attr("class", "d3-tip")
+      .attr("id", "treeHelpTip")
+      .offset([-20, 0]).html(function(d, i) {
+       return "The collapsible tree diagram (or dendrogram) serves as a tennis player's profile."
+       + "<br>" + "When clicked, the tennis ball 'nodes' ultimately expand into end nodes."
+       + "<br>" + "The top three end nodes contain a player's personal information."
+       + "<br>" + "Whereas the bottom three end nodes contain a player's match statistics."
+       + "<br>" + "The latter three are clickable and in turn update the Bar Chart below with the desired match statistic."});
+
+    treeSvg.call(treeHelpTip);
+
+    treeSvg.append('text')
+        //.attr('id', 'test')
+        .attr('font-family', 'FontAwesome')
+        .attr('font-size', '30px' )
+        .attr('x', treeWidth)
+        .attr('y', treeMargin.top)
+        .text(function(d) { return '\uf059' })
+        .on("mouseover", treeHelpTip.show)
+        .on("mouseout", treeHelpTip.hide);
+
+    // append chart title
+    treeSvg.append("text")
+        .attr('class', 'chartTitle')
+        .attr('id', 'treeTitle')
+        .attr('x', treeWidth * (3 / 4))
+        .attr('y', treeMargin.top)
+        .attr('text-anchor', 'end')
+        .text('Collapsible Tree Diagram of ' + player.name)
+
+    var i = 0,
+        duration = 750,
+        root;
+
+    // declares a tree layout and assigns the size
+    var treemap = d3.tree().size([treeHeight, treeWidth]);
+
+    // Assigns parent, children, height, depth
+    root = d3.hierarchy(treeData, function(d) { return d.children; });
+    root.x0 = treeHeight / 2;
+    root.y0 = 0;
+
+    // Collapse after the second level
+    root.children.forEach(collapse);
+
+    update(root);
+
+    // Collapse the node and all it's children
+    function collapse(d) {
+      if(d.children) {
+        d._children = d.children
+        d._children.forEach(collapse)
+        d.children = null
+      }
     }
-    });
-    but3.addEventListener("click", {
-    handleEvent: function (event) {
-     makePie(data, tournament, statistic, playerNationality, 3);
+
+    function update(source) {
+
+      // Assigns the x and y position for the nodes
+      var treeData = treemap(root);
+
+      // Compute the new tree layout.
+      var nodes = treeData.descendants(),
+          links = treeData.descendants().slice(1);
+
+      // Normalize for fixed-depth.
+      nodes.forEach(function(d){ d.y = d.depth * 180});
+
+      // Update the nodes...
+      var node = treeSvg.selectAll('g.node')
+        .data(nodes, function(d) {return d.id || (d.id = ++i); });
+
+      // Enter any new modes at the parent's previous position.
+      var nodeEnter = node.enter().append('g')
+          .attr('class', 'node')
+          .attr("transform", function(d) {
+            return "translate(" + source.y0 + "," + source.x0 + ")";
+        })
+        .on('click', click);
+
+    // Add Circle for the nodes
+    nodeEnter.append('circle')
+        .attr('class', 'node')
+        .attr('r', 1e-6)
+        .style("fill", function(d) {
+            return d._children ? "LawnGreen" : "#fff";
+        })
+        .on('click', function(d){
+            if(d._children == undefined ){
+                if (d.data.name == "Match Winning Rate: " + round(player.win_rate * 100, 2) + "%" ){
+                    return makeBarChart(data, playerNumber, 0);
+                } else if (d.data.name == "Average No. of Aces per Match: " + round(player.mean_ace, 2)){
+                    return makeBarChart(data, playerNumber, 1);
+                } else if (d.data.name == "Average No. of Double Faults per Match: " + round(player.mean_df, 2)){
+                    return makeBarChart(data, playerNumber, 2);
+                };
+            };
+        });
+
+      // Add labels for the nodes
+      nodeEnter.append('text')
+          .attr("dy", ".35em")
+          .attr("x", function(d) {
+              return d.children || d._children ? -13 : 13;
+          })
+          .attr("text-anchor", function(d) {
+              return d.children || d._children ? "end" : "start";
+          })
+          .text(function(d) { return d.data.name; });
+
+      // UPDATE
+      var nodeUpdate = nodeEnter.merge(node);
+
+      // Transition to the proper position for the node
+      nodeUpdate.transition()
+        .duration(duration)
+        .attr("transform", function(d) {
+            return "translate(" + d.y + "," + d.x + ")";
+         });
+
+      // Update the node attributes and style
+      nodeUpdate.select('circle.node')
+        .attr('r', 10)
+        .style("fill", function(d) {
+            return d._children ? "LawnGreen" : "#fff";
+        })
+        .attr('cursor', 'pointer');
+
+
+      // Remove any exiting nodes
+      var nodeExit = node.exit().transition()
+          .duration(duration)
+          .attr("transform", function(d) {
+              return "translate(" + source.y + "," + source.x + ")";
+          })
+          .remove();
+
+      // On exit reduce the node circles size to 0
+      nodeExit.select('circle')
+        .attr('r', 1e-6);
+
+      // On exit reduce the opacity of text labels
+      nodeExit.select('text')
+        .style('fill-opacity', 1e-6);
+
+      // Update the links...
+      var link = treeSvg.selectAll('path.link')
+          .data(links, function(d) { return d.id; });
+
+      // Enter any new links at the parent's previous position.
+      var linkEnter = link.enter().insert('path', "g")
+          .attr("class", "link")
+          .attr('d', function(d){
+            var o = {x: source.x0, y: source.y0}
+            return diagonal(o, o)
+          });
+
+      // UPDATE
+      var linkUpdate = linkEnter.merge(link);
+
+      // Transition back to the parent element position
+      linkUpdate.transition()
+          .duration(duration)
+          .attr('d', function(d){ return diagonal(d, d.parent) });
+
+      // Remove any exiting links
+      var linkExit = link.exit().transition()
+          .duration(duration)
+          .attr('d', function(d) {
+            var o = {x: source.x, y: source.y}
+            return diagonal(o, o)
+          })
+          .remove();
+
+      // Store the old positions for transition.
+      nodes.forEach(function(d){
+        d.x0 = d.x;
+        d.y0 = d.y;
+      });
+
+      // Creates a curved (diagonal) path from parent to the child nodes
+      function diagonal(s, d) {
+
+        path = `M ${s.y} ${s.x}
+                C ${(s.y + d.y) / 2} ${s.x},
+                  ${(s.y + d.y) / 2} ${d.x},
+                  ${d.y} ${d.x}`
+
+        return path
+      }
+
+      // Toggle children on click.
+      function click(d) {
+        if (d.children) {
+            d._children = d.children;
+            d.children = null;
+          } else {
+            d.children = d._children;
+            d._children = null;
+          }
+        update(d);
+      }
     }
-    });
-    but4.addEventListener("click", {
-    handleEvent: function (event) {
-      makePie(data, tournament, statistic, playerNationality, 4);
-    }
-    });
-    but5.addEventListener("click", {
-    handleEvent: function (event) {
-      makePie(data, tournament, statistic, playerNationality, 5);
-    }
-    });
-    but6.addEventListener("click", {
-    handleEvent: function (event){
-      makePie(data, tournament, statistic, playerNationality, 6);
-    }
-    });
+
+    // call bar chart function using a player object as an argument
+    makeBarChart(data, playerNumber, 2);
+
+    // update barchart
+    updateBarchart(data);
 
 };
 
@@ -914,124 +877,101 @@ function getValues(obj, key) {
 // takes in an (incomplete) string argument and array and autocompletes upon selection
 // source: https://www.w3schools.com/howto/howto_js_autocomplete.asp
 function autocomplete(inp, arr) {
-
-    // current selected item in list
-    var currentFocus;
-
-    // execute a function when someone writes in the text field
-    inp.addEventListener("input", function(e) {
-
-        var a, b, i, val = this.value;
-
-        //close any already open lists of autocompleted values
-        closeAllLists();
-
-        if (!val) {
-          return false;
-        };
-
-        // set currentfocus to -1 so indexing is inhibited
-        currentFocus = -1;
-
-        //create a DIV element that will contain the items (values)
-        a = document.createElement("DIV");
-        a.setAttribute("id", this.id + "autocomplete-list");
-        a.setAttribute("class", "autocomplete-items");
-
-        //append the DIV element as a child of the autocomplete container
-        this.parentNode.appendChild(a);
-
-        //for each item in the array
-        for (i = 0; i < arr.length; i++) {
-
-            //check if the item starts with the same letters as the text field value
-            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()){
-
-                //create a DIV element for each matching element
-                b = document.createElement("DIV");
-
-                //make the matching letters bold
-                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-                b.innerHTML += arr[i].substr(val.length);
-
-                // insert a input field that will hold the current array item's value
-                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-
-                // execute a function when someone clicks on the item value (DIV element)
-                b.addEventListener("click", function(e){
-
-                    //insert the value for the autocomplete text field
-                    inp.value = this.getElementsByTagName("input")[0].value;
-
-                    //close autocompleted values, or any other autocompleted values
-                    closeAllLists();
-
-              });
-
-              a.appendChild(b);
-
-            }
+  /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+  var currentFocus;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+      var a, b, i, val = this.value;
+      /*close any already open lists of autocompleted values*/
+      closeAllLists();
+      if (!val) { return false;}
+      currentFocus = -1;
+      /*create a DIV element that will contain the items (values):*/
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (i = 0; i < arr.length; i++) {
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          /*execute a function when someone clicks on the item value (DIV element):*/
+              b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+          });
+          a.appendChild(b);
         }
-    });
-
-    /*execute a function presses a key on the keyboard:*/
-    inp.addEventListener("keydown", function(e) {
-        var x = document.getElementById(this.id + "autocomplete-list");
-        if (x) x = x.getElementsByTagName("div");
-        if (e.keyCode == 13) {
-        /*If the ENTER key is pressed, prevent the form from being submitted,*/
-        e.preventDefault();
-        if (currentFocus > -1) {
-        /*and simulate a click on the "active" item:*/
-        if (x) x[currentFocus].click();
-        }
-        }
-    });
-
-    function addActive(x) {
-
-        // a function to classify an item as "active"
-        if (!x) return false;
-
-        // start by removing the "active" class on all items
-        removeActive(x);
-        if (currentFocus >= x.length) currentFocus = 0;
-        if (currentFocus < 0) currentFocus = (x.length - 1);
-
-        // add class "autocomplete-active"
-        x[currentFocus].classList.add("autocomplete-active");
-    };
-
-    function removeActive(x) {
-
-        // a function to remove the "active" class from all autocomplete items
-        for (var i = 0; i < x.length; i++) {
-
-          x[i].classList.remove("autocomplete-active");
-
-        };
-    };
-
-    function closeAllLists(elmnt) {
-
-            // close all autocomplete lists in the document, except the one passed as an argument
-            var x = document.getElementsByClassName("autocomplete-items");
-
-            for (var i = 0; i < x.length; i++){
-
-                if (elmnt != x[i] && elmnt != inp){
-
-                    x[i].parentNode.removeChild(x[i]);
-
-                };
-            };
-    };
-
-    /*execute a function when someone clicks in the document:*/
-    document.addEventListener("click", function (e) {
-        closeAllLists(e.target);
-    });
-};
+      }
+  });
+  // /*execute a function presses a key on the keyboard:*/
+  // inp.addEventListener("keydown", function(e) {
+  //     var x = document.getElementById(this.id + "autocomplete-list");
+  //     if (x) x = x.getElementsByTagName("div");
+  //     if (e.keyCode == 40) {
+  //       /*If the arrow DOWN key is pressed,
+  //       increase the currentFocus variable:*/
+  //       currentFocus++;
+  //       /*and and make the current item more visible:*/
+  //       addActive(x);
+  //     } else if (e.keyCode == 38) { //up
+  //       /*If the arrow UP key is pressed,
+  //       decrease the currentFocus variable:*/
+  //       currentFocus--;
+  //       /*and and make the current item more visible:*/
+  //       addActive(x);
+  //     } else if (e.keyCode == 13) {
+  //       /*If the ENTER key is pressed, prevent the form from being submitted,*/
+  //       e.preventDefault();
+  //       if (currentFocus > -1) {
+  //         /*and simulate a click on the "active" item:*/
+  //         if (x) x[currentFocus].click();
+  //       }
+  //     }
+  // });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+      x[i].parentNode.removeChild(x[i]);
+    }
+  }
+}
+/*execute a function when someone clicks in the document:*/
+document.addEventListener("click", function (e) {
+    closeAllLists(e.target);
+});
+}
 
 // accepts list of objects and key based on which list is sorted in ascending order
 function ascendingOrder(list, key){
