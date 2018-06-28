@@ -1,3 +1,9 @@
+/* Style Sheet for ATP Match Data visualizations pages
+Name: Lennert Jansen
+Date: 28 June 2018
+Course: Programming Project, Spring 2018 */
+
+/* fill for bar chart rects for both normal and hover cases */
 .bar {
 	fill: steelblue;
 }
@@ -5,26 +11,25 @@
 	fill: orange;
 }
 
+ /* design for nodes of dendrogram to look like tennis balls, links and font */
 .node circle {
   fill: #fff;
   stroke: LawnGreen;
   stroke-width: 3px;
 }
-
 .node text {
   font: 12px sans-serif;
 }
-
 .link {
   fill: none;
   stroke: #ccc;
   stroke-width: 2px;
 }
 
-/* Tooltip dingen */
+/* Tooltip design */
 .d3-tip {
   line-height: 1;
-  font-family: arial;
+  font-family: sans-serif;
   padding: 12px;
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
@@ -52,7 +57,7 @@
 }
 
 
-/* tooltip */
+/*  help tooltip */
 .tooltip {
   background: #eee;
   box-shadow: 0 0 5px #999999;
@@ -68,7 +73,7 @@
   z-index: 10;
 }
 
-
+ /* html background body design */
 html, body {
 	height: 1600px;
   width: 100%;
@@ -76,7 +81,6 @@ html, body {
 	padding: 0;
   color: white;
 }
-
 body {
   background: rgb(231,76,60);
   background: -moz-linear-gradient(-45deg,  grey 0%, black 100%);
@@ -93,8 +97,7 @@ body {
 	opacity: 0.5;
 }
 
-/* Autocompletion things */
-
+/* Autocompletion design */
 * { box-sizing: border-box; }
 body {
   font: 16px Arial;
@@ -158,4 +161,4 @@ overflow:hidden;
 float:left;
 width:25%;
 overflow:hidden;
-} 
+}
