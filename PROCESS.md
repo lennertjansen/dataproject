@@ -76,3 +76,15 @@ Fixing the title and legend placement.
 
 # Wednesday, June 27th
 Added a dropdown menu to the piechart, giving the user the option to pick the number of slices.
+
+Finished writing report.
+
+Did a code review with Jitse Schol.
+
+Worked out a bug in the searchbar.
+
+Finished the placement of the respective div-elements.
+
+Finalized the titles, legends, and help tooltips.
+
+# Thursday, June 28th
