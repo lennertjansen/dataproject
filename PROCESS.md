@@ -17,10 +17,9 @@ Started harvesting and manipulating the data into a usable form for my project.
 
 Continued data manipulation well into Week 2.
 
-...
-...
-...
-...
+Started implementing the basic unlinked versions of the visualizations.
+
+Discovered I had to keep track of my process in this file.
 
 # Monday, June 18th
 Finished fine tuning the collapsible tree-diagram, which can now also be rendered by searching for a player in the search bar.
