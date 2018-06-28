@@ -93,3 +93,5 @@ Created LICENSE.md
 Fixed the final bug in the story.html page.
 
 Final code cleaning session.
+
+Completed first complete final version.
