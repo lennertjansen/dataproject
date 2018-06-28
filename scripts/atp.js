@@ -40,7 +40,6 @@ window.onload = function() {
                 autocomplete(document.getElementById("myInput"), playerNames);
                 for (i = 0; i < playerData.length; i++){
                     if (value == playerData[i].name.toLowerCase()){
-                        console.log(playerData[i]);
                         makeTree(playerData, i);
                         makeBarChart(playerData, i, 0);
                         updateBarchart(playerData, i);
