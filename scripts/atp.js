@@ -709,7 +709,7 @@ function makePie(data, tournament, statistic, playerNationality, slices){
     // append legend
     pieSvg.append("g")
         .attr("id", "graphLegend")
-        .attr("transform", "translate(0, 300)");
+        .attr("transform", "translate(0, 100)");
     pieSvg.select("#graphLegend")
         .call(graphLegend);
 
@@ -746,7 +746,7 @@ function makePie(data, tournament, statistic, playerNationality, slices){
         .transition().delay(function(d,i) {
             return i * 5;
         })
-        .duration(1500)
+        .duration(750)
         .attrTween('d', function(d) {
             var i = d3.interpolate(d.startAngle + 0.1, d.endAngle);
             return function(t) {
